@@ -17,6 +17,11 @@
 	},
 	"observability": {
 		"enabled": true
+	},
+	"workers_dev": false,
+	"route": {
+		"custom_domain": true,
+		"pattern": "thisis.ooo"
 	}
 	/**
 	 * Smart Placement
