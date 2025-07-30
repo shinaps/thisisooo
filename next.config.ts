@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  serverExternalPackages: [
+    '@libsql/client',       // ←必須
+    '@libsql/isomorphic-ws' // ←Ws ドライバを使うなら
+  ],
 };
 
 export default nextConfig;

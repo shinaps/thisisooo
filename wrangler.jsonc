@@ -19,10 +19,24 @@
 		"enabled": true
 	},
 	"workers_dev": false,
-	"route": {
-		"custom_domain": true,
-		"pattern": "thisis.ooo"
+
+		"env": {
+		"development": {
+			"vars": {
+				"ENV": "development"
+			}
+		},
+		"production": {
+			"vars": {
+				"ENV": "production"
+			},
+			"route": {
+				"custom_domain": true,
+				"pattern": "thisis.ooo"
+			}
+		}
 	}
+
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
