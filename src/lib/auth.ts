@@ -6,18 +6,29 @@ import * as schema from '@/drizzle/schemas'
 import { env } from '@/lib/env'
 
 const client = createClient({
-	url: env.TURSO_DATABASE_URL,
-	authToken: env.TURSO_AUTH_TOKEN,
+  url: env.TURSO_DATABASE_URL,
+  authToken: env.TURSO_AUTH_TOKEN,
 })
 
 const db = drizzle(client, { schema })
 
 export const auth = betterAuth({
-	database: drizzleAdapter(db, {
-		provider: 'sqlite',
-	}),
-	emailAndPassword: {
-		enabled: true,
-	},
-	trustedOrigins: ['http://localhost:8787', 'https://thisis.ooo/'],
+  database: drizzleAdapter(db, {
+    provider: 'sqlite',
+  }),
+  emailAndPassword: {
+    enabled: true,
+  },
+  trustedOrigins: [
+    'http://localhost:3000', //
+    'https://next-dev.shinaps.jp',
+    'https://next-preview.shinaps.jp',
+    'https://thisis.ooo/',
+  ],
+  socialProviders: {
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
+  },
 })

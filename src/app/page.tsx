@@ -1,24 +1,27 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { authClient } from '@/lib/auth-client'
 
 export default function Home() {
-	const { data, isPending } = authClient.useSession()
-	const router = useRouter()
-	if (isPending) {
-		return <div>Loading...</div>
-	}
+  const router = useRouter()
+  const { data, isPending } = authClient.useSession()
 
-	if (!data) {
-		router.push('/sign-up')
-		return
-	}
+  useEffect(() => {
+    if (!isPending && !data) {
+      router.push('/sign-in')
+    }
+  }, [isPending, data, router])
 
-	return (
-		<div className="flex flex-col items-center justify-center min-h-screen">
-			<h1 className="text-2xl font-bold">Welcome, {data.user.email}!</h1>
-			<p className="mt-4">You are logged in.</p>
-		</div>
-	)
+  if (isPending || !data) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-2xl font-bold">Welcome, {data.user.email}!</h1>
+      <p className="mt-4">You are logged in.</p>
+    </div>
+  )
 }
