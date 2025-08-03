@@ -18,15 +18,8 @@
   "workers_dev": false,
 
   "env": {
-    "development": {
-      "vars": {
-        "ENV": "development"
-      }
-    },
+    "development": {},
     "production": {
-      "vars": {
-        "ENV": "production"
-      },
       "route": {
         "custom_domain": true,
         "pattern": "thisis.ooo"
