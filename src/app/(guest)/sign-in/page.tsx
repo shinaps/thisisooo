@@ -11,7 +11,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-8">
+    <div className="bg-accent centerize">
       <Button size="lg" onClick={signIn}>
         Googleアカウントでログインする
       </Button>

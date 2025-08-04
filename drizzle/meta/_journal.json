@@ -8,6 +8,13 @@
       "when": 1753892393031,
       "tag": "0000_fluffy_ender_wiggin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1754342302029,
+      "tag": "0001_exotic_the_fallen",
+      "breakpoints": true
     }
   ]
 }

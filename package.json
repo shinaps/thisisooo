@@ -11,7 +11,7 @@
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy --env production",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env development",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
-    "better-auth:generate": "npx @better-auth/cli@latest generate --output ./src/drizzle/schemas.ts --yes",
+    "better-auth:generate": "npx @better-auth/cli@latest generate --output src/drizzle/schema/auth-schema.ts --yes",
     "drizzle:generate": "npx drizzle-kit generate",
     "drizzle:migrate": "npx drizzle-kit migrate"
   },
@@ -39,6 +39,7 @@
     "@types/node": "^20.19.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript/native-preview": "7.0.0-dev.20250804.1",
     "drizzle-kit": "^0.31.4",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.6",

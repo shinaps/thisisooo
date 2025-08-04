@@ -119,4 +119,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .centerize {
+    @apply flex-1 flex items-center justify-center;
+  }
 }

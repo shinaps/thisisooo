@@ -2,7 +2,7 @@ import { createClient } from '@libsql/client/web'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { drizzle } from 'drizzle-orm/libsql'
-import * as schema from '@/drizzle/schemas'
+import * as schema from '@/drizzle/schema/auth-schema'
 import { env } from '@/lib/env'
 
 const client = createClient({
