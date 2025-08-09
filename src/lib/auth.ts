@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { createClient } from '@libsql/client/web'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
@@ -31,4 +33,19 @@ export const auth = betterAuth({
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
   },
+  user: {
+    additionalFields: {
+      username: {
+        type: 'string',
+        required: true,
+        unique: true,
+        defaultValue: () => crypto.randomUUID(),
+      },
+    },
+    deleteUser: {
+      enabled: true,
+    },
+  },
 })
+
+export type User = (typeof auth.$Infer.Session)['user']

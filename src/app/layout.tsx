@@ -19,11 +19,15 @@ export const metadata: Metadata = {
   description: 'this is app for ◯◯◯',
 }
 
-export default function RootLayout(props: { children: ReactNode }) {
+export default function RootLayout(props: { children: ReactNode; header: ReactNode }) {
   return (
     <html lang="ja">
-      <body className={cn(geistSans.variable, geistMono.variable, 'antialiased bg-background')}>
-        <div className="w-full max-w-md min-h-screen mx-auto flex flex-col border">{props.children}</div>
+      <body
+        className={cn(geistSans.variable, geistMono.variable, 'antialiased bg-background min-h-dvh flex flex-col')} //
+        style={{ overscrollBehavior: 'none', overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'auto', touchAction: 'none' }}
+      >
+        <header className="max-w-md mx-auto w-full sticky top-0 z-50 border-b bg-background">{props.header}</header>
+        <main className="w-full max-w-md mx-auto flex flex-col grow overflow-y-scroll scrollbar-none">{props.children}</main>
       </body>
     </html>
   )

@@ -11,40 +11,40 @@ type ContentType = (typeof CONTENT_TYPE)[keyof typeof CONTENT_TYPE]
 type BaseContent = {
   id: string
   type: ContentType
-  createdAt: number
+  createdAt: Date
 }
 
-type TextContent = BaseContent & {
+export type TextContent = BaseContent & {
   type: typeof CONTENT_TYPE.TEXT
-  text: string
+  role: 'user' | 'assistant' | 'system'
+  content: string
 }
 
-type ImageContent = BaseContent & {
+export type ImageContent = BaseContent & {
   type: typeof CONTENT_TYPE.IMAGE
   url: string
   alt?: string
 }
 
-type Content = TextContent | ImageContent
+export type Content = TextContent | ImageContent
 
 export const interview = sqliteTable('interview', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   title: text('title').notNull(),
-  content: text('content', { mode: 'json' }).$type<Content>().notNull(),
+  theme: text('theme').notNull(),
+  content: text('content', { mode: 'json' }) //
+    .$type<Content[]>()
+    .notNull(),
+  completed: integer('completed', { mode: 'boolean' })
+    .$defaultFn(() => false)
+    .notNull(),
   authorId: text('author_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' })
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-    .$onUpdateFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  published: integer('published', { mode: 'boolean' })
-    .$defaultFn(() => false)
     .notNull(),
 })
 

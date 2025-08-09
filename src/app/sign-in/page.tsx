@@ -5,13 +5,13 @@ import { authClient } from '@/lib/auth-client'
 
 export default function SignInPage() {
   const signIn = async () => {
-    const data = await authClient.signIn.social({
+    await authClient.signIn.social({
       provider: 'google',
     })
   }
 
   return (
-    <div className="bg-accent centerize">
+    <div className="grow flex items-center justify-center">
       <Button size="lg" onClick={signIn}>
         Googleアカウントでログインする
       </Button>

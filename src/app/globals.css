@@ -120,7 +120,109 @@
     @apply bg-background text-foreground;
   }
 
-  .centerize {
-    @apply flex-1 flex items-center justify-center;
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+    overflow: scroll; /* または overflow: auto; */
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}
+
+@layer components {
+  .markdown-body {
+    /* 全体 */
+    @apply text-foreground leading-relaxed break-words;
+
+    /* 見出し ------------------------------------- */
+
+    h1 {
+      @apply text-2xl font-bold mt-4 mb-3;
+    }
+
+    h2 {
+      @apply text-xl font-semibold mt-6 mb-2;
+    }
+
+    h3 {
+      @apply text-base font-semibold mt-2 mb-4;
+    }
+
+    h4 {
+      @apply text-base font-semibold mt-5 mb-3;
+    }
+
+    /* 段落 --------------------------------------- */
+
+    p {
+      @apply mb-4 text-sm;
+    }
+
+    /* リスト ------------------------------------- */
+
+    ul {
+      @apply list-disc    pl-6 mb-4;
+    }
+
+    ol {
+      @apply list-decimal pl-6 mb-4;
+    }
+
+    li {
+      @apply mb-1 text-sm;
+    }
+
+    /* リンク ------------------------------------- */
+
+    a {
+      @apply text-primary underline underline-offset-4 hover:opacity-80 transition-colors;
+    }
+
+    /* 画像 --------------------------------------- */
+
+    img {
+      @apply rounded-lg shadow-sm max-w-full h-auto my-6;
+    }
+
+    /* 引用 --------------------------------------- */
+
+    blockquote {
+      @apply border-l-4 border-muted pl-4 italic text-muted-foreground my-6;
+    }
+
+    /* コードブロック ------------------------------ */
+
+    pre {
+      @apply bg-muted text-foreground text-sm rounded-lg p-4 overflow-x-auto my-6;
+    }
+
+    /* インラインコード ---------------------------- */
+
+    code {
+      @apply bg-muted text-foreground text-sm px-1.5 py-0.5 rounded;
+    }
+
+    /* テーブル ----------------------------------- */
+
+    table {
+      @apply table-auto w-full border-collapse text-xs my-6;
+    }
+
+    th {
+      @apply bg-muted text-foreground font-semibold px-3 py-2 border border-border;
+    }
+
+    td {
+      @apply px-3 py-2 border border-border;
+    }
+
+    /* 仕切り線 ----------------------------------- */
+
+    hr {
+      @apply my-4 border-border;
+    }
   }
 }
