@@ -34,7 +34,7 @@
       "route": {
         "custom_domain": true,
         "pattern": "thisis.ooo"
-      }
+      },"name": "thisisooo"
     }
   }
 
