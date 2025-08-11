@@ -9,6 +9,7 @@ export const env = createEnv({
     TURSO_AUTH_TOKEN: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    OPENAI_API_KEY: z.string(),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.url(),
@@ -21,5 +22,6 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
 })

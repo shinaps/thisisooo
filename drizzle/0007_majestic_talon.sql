@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `article_interview_id_unique` ON `article` (`interview_id`);

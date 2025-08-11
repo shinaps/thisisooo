@@ -1,0 +1,1 @@
+ALTER TABLE `interview` ADD `thumbnailUrl` text;
