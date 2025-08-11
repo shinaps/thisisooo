@@ -1,7 +1,7 @@
 'use client'
 
 import { readStreamableValue } from '@ai-sdk/rsc'
-import { Circle, LoaderCircle, Mic, Send, WandSparkles, X } from 'lucide-react'
+import { Circle, LoaderCircle, Mic, RefreshCcw, Send, WandSparkles, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { continueConversationAction } from '@/app/interviews/[interviewId]/_actions/continue-conversation-action'
@@ -139,6 +139,21 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
     await sendMessage(newMessages)
   }
 
+  // 対象のメッセージ以降のメッセージを削除して再送信する
+  const handleClickRefresh = async (contentId: string) => {
+    const index = conversation.findIndex((message) => message.id === contentId)
+    if (index === -1) {
+      return
+    }
+
+    setInput('')
+    // 対象のメッセージ以降のメッセージを削除して再送信
+    const messagesToResend = conversation.slice(0, index)
+    console.log(messagesToResend)
+    setConversation(messagesToResend)
+    await sendMessage(messagesToResend)
+  }
+
   const handleClickWindSparkles = async () => {
     const normalizedText = await normalizeText(conversation, input)
     setInput(normalizedText)
@@ -159,17 +174,25 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
             return null
           }
 
+          if (message.role === 'user') {
+            return (
+              <div key={index} className={cn('whitespace-pre-line max-w-3/4 self-end bg-secondary rounded-lg p-2')}>
+                {message.content}
+              </div>
+            )
+          }
+
           return (
-            <div
-              key={index}
-              className={cn(
-                'whitespace-pre-line',
-                message.role === 'user'
-                  ? 'max-w-3/4 self-end bg-secondary rounded-lg p-2' //
-                  : 'self-start',
-              )}
-            >
-              {message.content}
+            <div key={index} className={cn('whitespace-pre-line self-start relative pb-6')}>
+              <span>{message.content}</span>
+              <Button
+                onClick={() => handleClickRefresh(message.id)} //
+                size="icon"
+                variant="ghost"
+                className="absolute size-5 -bottom-0 left-0 rounded-none"
+              >
+                <RefreshCcw className="size-3" />
+              </Button>
             </div>
           )
         })}
