@@ -36,8 +36,6 @@ export const continueConversationAction = async (id: string, history: TextConten
       stream.update(text)
     }
 
-    stream.done()
-
     const updatedMessages = [
       ...history,
       {
@@ -49,6 +47,8 @@ export const continueConversationAction = async (id: string, history: TextConten
       },
     ] satisfies TextContent[]
     await updateInterviewMessagesAction(id, updatedMessages)
+
+    stream.done()
   })()
 
   return {
