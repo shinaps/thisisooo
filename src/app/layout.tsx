@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'this is ◯◯◯',
-  description: 'this is app for ◯◯◯',
+  description: 'AIがあらゆるテーマでインタビュー記事を自動生成するサービスです。',
 }
 
 export default function RootLayout(props: { children: ReactNode; header: ReactNode }) {
