@@ -21,6 +21,7 @@ export const NotMyArticle = (props: Props) => {
     props.article.status !== ARTICLE_STATUS.COMPLETED
 
   if (cannotAccess) {
+    console.log('cannot access')
     redirect('/')
   }
 

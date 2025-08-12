@@ -11,7 +11,8 @@ export function middleware(request: NextRequest) {
   if (!sessionCookie) {
     const isPublicRoute =
       request.nextUrl.pathname === '/' || //
-      request.nextUrl.pathname.startsWith('/sign-in')
+      request.nextUrl.pathname.startsWith('/sign-in') ||
+      request.nextUrl.pathname.startsWith('/articles/')
 
     if (isPublicRoute) {
       // If the user is already on the sign-in page, allow them to stay there

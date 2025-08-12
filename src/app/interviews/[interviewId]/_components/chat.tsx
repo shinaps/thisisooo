@@ -9,6 +9,7 @@ import { detectInterviewCompletedAction } from '@/app/interviews/[interviewId]/_
 import { Visualizer } from '@/app/interviews/[interviewId]/_components/visualizer'
 import { useNormalizeText } from '@/app/interviews/[interviewId]/_hooks/use-normalize-text'
 import { useRecordingAndTranscribe } from '@/app/interviews/[interviewId]/_hooks/use-recording-and-transcribe'
+import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import type { TextContent } from '@/drizzle/schema/interview-schema'
@@ -149,7 +150,6 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
     setInput('')
     // 対象のメッセージ以降のメッセージを削除して再送信
     const messagesToResend = conversation.slice(0, index)
-    console.log(messagesToResend)
     setConversation(messagesToResend)
     await sendMessage(messagesToResend)
   }
@@ -186,7 +186,19 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
             <div key={index} className={cn('whitespace-pre-line self-start relative pb-6')}>
               <span>{message.content}</span>
               <Button
-                onClick={() => handleClickRefresh(message.id)} //
+                onClick={() => {
+                  ConfirmDialog.call({
+                    title: '再実行の確認',
+                    description: 'このメッセージを再生成しますか？',
+                    onConfirm: {
+                      text: '再生成する',
+                      variant: 'default',
+                      onClick: async () => {
+                        await handleClickRefresh(message.id)
+                      },
+                    },
+                  })
+                }} //
                 size="icon"
                 variant="ghost"
                 className="absolute size-5 -bottom-0 left-0 rounded-none"

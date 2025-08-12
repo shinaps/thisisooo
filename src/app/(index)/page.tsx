@@ -18,6 +18,7 @@ export default async function Home() {
     .from(article)
     .leftJoin(user, eq(article.authorId, user.id))
     .where(eq(article.published, true))
+    .limit(20)
     .orderBy(desc(article.createdAt))
 
   return <PublicArticles articles={articles} />

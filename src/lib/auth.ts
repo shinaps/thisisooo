@@ -23,6 +23,7 @@ export const auth = betterAuth({
   },
   trustedOrigins: [
     'http://localhost:3000', //
+    'http://localhost:8787', //
     'https://next-dev.shinaps.jp',
     'https://next-preview.shinaps.jp',
     'https://thisis.ooo/',

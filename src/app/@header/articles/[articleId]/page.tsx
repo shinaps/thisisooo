@@ -15,12 +15,12 @@ export default async function ArticleHeader({ params }: { params: Promise<{ arti
     headers: await headers(),
   })
 
-  const result = await db
+  const [selectedArticle] = await db
     .select() //
     .from(article)
     .where(eq(article.id, articleId))
 
-  if (result.length === 0) {
+  if (!selectedArticle) {
     return (
       <div className="mx-auto max-w-screen-lg h-16 flex items-center px-4">
         <Link href="/" className="font-semibold">
@@ -30,9 +30,20 @@ export default async function ArticleHeader({ params }: { params: Promise<{ arti
     )
   }
 
-  const selectedArticle = result[0]
-  const isAuthor = session?.user?.id === selectedArticle.authorId
+  if (!session?.user) {
+    return (
+      <div className="mx-auto max-w-screen-lg h-16 flex items-center justify-between px-4">
+        <Link href="/" className="font-semibold">
+          this is ◯◯◯
+        </Link>
+        <Link href="/sign-in">
+          <Button>ログイン</Button>
+        </Link>
+      </div>
+    )
+  }
 
+  const isAuthor = session.user.id === selectedArticle.authorId
   if (isAuthor && selectedArticle.status === ARTICLE_STATUS.COMPLETED) {
     return (
       <div className="mx-auto max-w-screen-lg h-16 flex items-center justify-between px-4">

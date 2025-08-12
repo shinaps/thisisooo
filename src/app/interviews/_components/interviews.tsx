@@ -3,10 +3,10 @@
 import { Trash } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import type React from 'react'
 import { useState } from 'react'
 import { deleteInterviewAction } from '@/app/interviews/_actions/delete-interview-action'
 import { type InterviewTheme, initInterviewAction } from '@/app/interviews/_actions/init-interview-action'
+import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -62,8 +62,7 @@ export const Interviews = (props: Props) => {
     )
   }
 
-  const handleDeleteInterview = async (event: React.MouseEvent<HTMLButtonElement>, interviewId: string) => {
-    event.preventDefault()
+  const handleDeleteInterview = async (interviewId: string) => {
     setIsLoading(true)
     try {
       await deleteInterviewAction(interviewId)
@@ -117,7 +116,20 @@ export const Interviews = (props: Props) => {
                       <span>{formattedDateTime}</span>
                       <Button
                         type="button" //
-                        onClick={(e) => handleDeleteInterview(e, interview.id)}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          ConfirmDialog.call({
+                            title: 'インタビューの削除',
+                            description: 'インタビューを削除しますか？インタビューを削除すると生成済みの記事も削除されます。',
+                            onConfirm: {
+                              text: '削除する',
+                              variant: 'destructive',
+                              onClick: async () => {
+                                await handleDeleteInterview(interview.id)
+                              },
+                            },
+                          })
+                        }}
                         variant="destructive"
                         size="icon"
                       >

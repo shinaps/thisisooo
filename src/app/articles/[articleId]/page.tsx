@@ -15,10 +15,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ articl
     headers: await headers(),
   })
 
-  if (!session?.user) {
-    redirect('/sign-in')
-  }
-
   const [selectedArticle] = await db
     .select({
       id: article.id,
@@ -39,9 +35,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ articl
     redirect('/')
   }
 
-  if (selectedArticle.authorId === session.user.id) {
-    return <MyArticle article={selectedArticle} />
+  if (!session?.user || session.user.id !== selectedArticle.authorId) {
+    return <NotMyArticle article={selectedArticle} />
   }
 
-  return <NotMyArticle article={selectedArticle} />
+  return <MyArticle article={selectedArticle} />
 }
