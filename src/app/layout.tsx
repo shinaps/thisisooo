@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import type { ReactNode } from 'react'
 import { Providers } from '@/components/providers'
+import { env } from '@/lib/env'
 import { cn } from '@/lib/utils'
 
 const geistSans = Geist({
@@ -16,6 +17,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: 'this is ◯◯◯',
   description: 'AIがあらゆるテーマでインタビュー記事を自動生成するサービスです。',
 }
