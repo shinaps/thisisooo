@@ -185,26 +185,28 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
           return (
             <div key={index} className={cn('whitespace-pre-line self-start relative pb-6')}>
               <span>{message.content}</span>
-              <Button
-                onClick={() => {
-                  ConfirmDialog.call({
-                    title: '再実行の確認',
-                    description: 'このメッセージを再生成しますか？',
-                    onConfirm: {
-                      text: '再生成する',
-                      variant: 'default',
-                      onClick: async () => {
-                        await handleClickRefresh(message.id)
+              {!isInterviewCompleted && (
+                <Button
+                  onClick={() => {
+                    ConfirmDialog.call({
+                      title: '再実行の確認',
+                      description: 'このメッセージを再生成しますか？',
+                      onConfirm: {
+                        text: '再生成する',
+                        variant: 'default',
+                        onClick: async () => {
+                          await handleClickRefresh(message.id)
+                        },
                       },
-                    },
-                  })
-                }} //
-                size="icon"
-                variant="ghost"
-                className="absolute size-5 -bottom-0 left-0 rounded-none"
-              >
-                <RefreshCcw className="size-3" />
-              </Button>
+                    })
+                  }} //
+                  size="icon"
+                  variant="ghost"
+                  className="absolute size-5 -bottom-0 left-0 rounded-none"
+                >
+                  <RefreshCcw className="size-3" />
+                </Button>
+              )}
             </div>
           )
         })}
