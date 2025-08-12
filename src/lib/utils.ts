@@ -9,13 +9,9 @@ import dayjs from 'dayjs'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 
-// プラグイン有効化
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-// デフォルトタイムゾーンを日本時間に設定
-dayjs.tz.setDefault('Asia/Tokyo')
-
 export const formatDate = (date: Date) => {
-  return dayjs(date).format('YYYY年M月D日')
+  return dayjs(date).tz('Asia/Tokyo').format('YYYY年M月D日 HH:mm')
 }
