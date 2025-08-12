@@ -3,8 +3,8 @@
 ## this is ...
 
 - not a vibe-coded project
-- Next.js running on Cloudflare Workers
+- built with Next.js on Cloudflare Workers
 - styled with shadcn/ui
-- data by drizzle
-- auth by better-auth
-- AI powered with ai-sdk
+- powered by drizzle
+- powered by better-auth
+- powered by ai-sdk
