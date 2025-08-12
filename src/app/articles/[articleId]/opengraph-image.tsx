@@ -4,7 +4,6 @@ import { db } from '@/drizzle/client'
 import { article } from '@/drizzle/schema/article-schema'
 import { user } from '@/drizzle/schema/auth-schema'
 
-export const alt = 'this is ◯◯◯'
 export const size = {
   width: 1200,
   height: 630,

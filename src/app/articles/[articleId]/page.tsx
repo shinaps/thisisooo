@@ -1,4 +1,5 @@
 import { eq } from 'drizzle-orm/sql/expressions/conditions'
+import type { Metadata, ResolvingMetadata } from 'next'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { MyArticle } from '@/app/articles/[articleId]/_components/my-article'
@@ -8,7 +9,46 @@ import { article } from '@/drizzle/schema/article-schema'
 import { user } from '@/drizzle/schema/auth-schema'
 import { auth } from '@/lib/auth'
 
-export default async function ArticlePage({ params }: { params: Promise<{ articleId: string }> }) {
+type Props = {
+  params: Promise<{ articleId: string }>
+}
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const { articleId } = await params
+
+  const [selectedArticle] = await db
+    .select({
+      title: article.title,
+      content: article.content,
+      userDisplayName: user.name,
+    }) //
+    .from(article)
+    .leftJoin(user, eq(article.authorId, user.id))
+    .where(eq(article.id, articleId))
+
+  const parentMeta = await parent
+
+  if (!selectedArticle) {
+    return {
+      title: parentMeta.title,
+      description: parentMeta.description,
+    }
+  }
+
+  let description = ''
+  if (selectedArticle.content) {
+    description = selectedArticle.content.split('\n')[0]
+  } else {
+    description = `${selectedArticle.title} | ${selectedArticle.userDisplayName}`
+  }
+
+  return {
+    title: selectedArticle.title,
+    description: description,
+  }
+}
+
+export default async function ArticlePage({ params }: Props) {
   const { articleId } = await params
 
   const session = await auth.api.getSession({
