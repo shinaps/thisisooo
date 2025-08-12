@@ -1,0 +1,1 @@
+ALTER TABLE `interview` DROP COLUMN `completed`;
