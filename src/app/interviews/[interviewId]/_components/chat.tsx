@@ -119,6 +119,7 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
       ])
     }
 
+    setIsInterviewCompleted(false)
     setIsJudgingInterviewCompleted(true)
   }
 
