@@ -1,6 +1,7 @@
-import { Notebook, Pencil } from 'lucide-react'
+import { Github, Notebook, Pencil } from 'lucide-react'
 import { headers } from 'next/headers'
 import Link from 'next/link'
+import { siGithub } from 'simple-icons'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
@@ -17,6 +18,11 @@ export default async function IndexPageHeader() {
           this is ◯◯◯
         </Link>
         <div className="flex items-center gap-x-4">
+          <a href="https://github.com/shinaps/thisisooo" target="_blank" rel="noreferrer" aria-label="GitHub">
+            <Button size="icon" variant="ghost">
+              <Github />
+            </Button>
+          </a>
           <Link href="/articles">
             <Button size="icon">
               <Notebook />
@@ -43,9 +49,17 @@ export default async function IndexPageHeader() {
       <Link href="/" className="font-semibold">
         this is ◯◯◯
       </Link>
-      <Link href="/sign-in">
-        <Button>ログイン</Button>
-      </Link>
+
+      <div className="flex items-center gap-x-4">
+        <a href="https://github.com/shinaps/thisisooo" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <Button size="icon" variant="ghost">
+            <Github />
+          </Button>
+        </a>
+        <Link href="/sign-in">
+          <Button>ログイン</Button>
+        </Link>
+      </div>
     </div>
   )
 }
