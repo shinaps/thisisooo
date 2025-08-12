@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import type React from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import type { SelectArticle } from '@/drizzle/schema/article-schema'
@@ -17,7 +16,6 @@ export const Articles = (props: Props) => {
         {props.articles.map((article) => {
           const date = new Date(article.createdAt)
           const formattedDateTime = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
-
           return (
             <Link href={`/articles/${article.id}`} key={article.id} className="w-full">
               <Card>
@@ -28,7 +26,7 @@ export const Articles = (props: Props) => {
                       {article.published ? '公開中' : '非公開'}
                     </Badge>
                   </div>
-                  <CardTitle>{article.title}</CardTitle>
+                  <CardTitle>{article.title || '記事を生成中です...'}</CardTitle>
                 </CardHeader>
                 <CardFooter>
                   <div className="flex justify-between w-full gap-x-4">
