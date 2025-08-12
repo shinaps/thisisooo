@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import type { SelectArticle } from '@/drizzle/schema/article-schema'
+import { formatDate } from '@/lib/utils'
 
 type Props = {
   articles: SelectArticle[]
@@ -14,8 +15,6 @@ export const Articles = (props: Props) => {
       <h2 className="font-semibold text-lg">自分の記事</h2>
       <div className="w-full items-center flex flex-col gap-y-4">
         {props.articles.map((article) => {
-          const date = new Date(article.createdAt)
-          const formattedDateTime = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
           return (
             <Link href={`/articles/${article.id}`} key={article.id} className="w-full">
               <Card>
@@ -30,7 +29,7 @@ export const Articles = (props: Props) => {
                 </CardHeader>
                 <CardFooter>
                   <div className="flex justify-between w-full gap-x-4">
-                    <span className="shrink-0">{formattedDateTime}</span>
+                    <span className="shrink-0">{formatDate(article.createdAt)}</span>
                   </div>
                 </CardFooter>
               </Card>

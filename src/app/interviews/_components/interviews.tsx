@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader } from '@/components/ui/loader'
+import { formatDate } from '@/lib/utils'
 
 type Props = {
   interviews: {
@@ -75,9 +76,6 @@ export const Interviews = (props: Props) => {
         </div>
         <div className="w-full items-center flex flex-col gap-y-4">
           {props.interviews.map((interview) => {
-            const date = new Date(interview.createdAt)
-            const formattedDateTime = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
-
             return (
               <Link href={`/interviews/${interview.id}`} key={interview.id} className="w-full">
                 <Card>
@@ -94,7 +92,7 @@ export const Interviews = (props: Props) => {
                   </CardHeader>
                   <CardFooter>
                     <div className="flex items-center justify-between w-full">
-                      <span>{formattedDateTime}</span>
+                      <span>{formatDate(interview.createdAt)}</span>
                     </div>
                   </CardFooter>
                 </Card>
