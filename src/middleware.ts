@@ -3,6 +3,10 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
+  if (request.method === 'HEAD' || request.method === 'OPTIONS') {
+    return NextResponse.next()
+  }
+
   const sessionCookie = getSessionCookie(request)
 
   // THIS IS NOT SECURE!
