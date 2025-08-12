@@ -37,9 +37,6 @@ export const interview = sqliteTable('interview', {
   content: text('content', { mode: 'json' }) //
     .$type<Content[]>()
     .notNull(),
-  completed: integer('completed', { mode: 'boolean' })
-    .$defaultFn(() => false)
-    .notNull(),
   authorId: text('author_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),

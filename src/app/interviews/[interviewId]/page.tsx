@@ -37,7 +37,6 @@ export default async function InterviewPage({ params }: { params: Promise<{ inte
   return (
     <Chat
       interviewId={selectedInterview.id} //
-      isCompleted={selectedInterview.completed}
       initialMessages={initialMessages}
     />
   )

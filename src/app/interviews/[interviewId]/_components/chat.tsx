@@ -2,10 +2,8 @@
 
 import { readStreamableValue } from '@ai-sdk/rsc'
 import { Circle, LoaderCircle, Mic, RefreshCcw, Send, WandSparkles, X } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { continueConversationAction } from '@/app/interviews/[interviewId]/_actions/continue-conversation-action'
-import { detectInterviewCompletedAction } from '@/app/interviews/[interviewId]/_actions/detect-interview-completed-action'
 import { Visualizer } from '@/app/interviews/[interviewId]/_components/visualizer'
 import { useNormalizeText } from '@/app/interviews/[interviewId]/_hooks/use-normalize-text'
 import { useRecordingAndTranscribe } from '@/app/interviews/[interviewId]/_hooks/use-recording-and-transcribe'
@@ -17,11 +15,9 @@ import { cn } from '@/lib/utils'
 
 type Props = {
   interviewId: string
-  isCompleted: boolean
   initialMessages: TextContent[]
 }
-export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
-  const router = useRouter()
+export const Chat = ({ interviewId, initialMessages }: Props) => {
   const initialMessageProceed = useRef(false)
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -30,8 +26,6 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
   const [conversation, setConversation] = useState<TextContent[]>(initialMessages)
   const [input, setInput] = useState<string>('')
   const [textareaHeight, setTextareaHeight] = useState<number>(0)
-  const [isJudgingInterviewCompleted, setIsJudgingInterviewCompleted] = useState<boolean>(false)
-  const [isInterviewCompleted, setIsInterviewCompleted] = useState<boolean>(isCompleted)
 
   const {
     isRecording, //
@@ -55,33 +49,11 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
       sendMessage(initialMessages)
       initialMessageProceed.current = true
     }
-
-    if (initialMessages.at(-1)?.role === 'assistant') {
-      setIsJudgingInterviewCompleted(true)
-    }
   }, [])
 
   useEffect(() => {
-    if (!isJudgingInterviewCompleted) return
-    if (conversation.at(-1)?.role !== 'assistant' || isInterviewCompleted) {
-      setIsJudgingInterviewCompleted(false)
-      return
-    }
-
-    detectInterviewCompletedAction(interviewId, conversation).then((isCompleted) => {
-      const changeToCompleted = isCompleted && !isInterviewCompleted
-      if (changeToCompleted) {
-        router.refresh()
-      }
-
-      setIsInterviewCompleted(isCompleted)
-      setIsJudgingInterviewCompleted(false)
-    })
-  }, [isJudgingInterviewCompleted])
-
-  useEffect(() => {
     bottomRef.current?.scrollIntoView()
-  }, [conversation, input, isInterviewCompleted])
+  }, [conversation, input])
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -118,9 +90,6 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
         },
       ])
     }
-
-    setIsInterviewCompleted(false)
-    setIsJudgingInterviewCompleted(true)
   }
 
   const handleClickSend = async () => {
@@ -186,35 +155,33 @@ export const Chat = ({ interviewId, isCompleted, initialMessages }: Props) => {
           return (
             <div key={index} className={cn('whitespace-pre-line self-start relative pb-6')}>
               <span>{message.content}</span>
-              {!isInterviewCompleted && (
-                <Button
-                  onClick={() => {
-                    ConfirmDialog.call({
-                      title: '再実行の確認',
-                      description: 'このメッセージを再生成しますか？',
-                      onConfirm: {
-                        text: '再生成する',
-                        variant: 'default',
-                        onClick: async () => {
-                          await handleClickRefresh(message.id)
-                        },
+              <Button
+                onClick={() => {
+                  ConfirmDialog.call({
+                    title: '再実行の確認',
+                    description: 'このメッセージを再生成しますか？',
+                    onConfirm: {
+                      text: '再生成する',
+                      variant: 'default',
+                      onClick: async () => {
+                        await handleClickRefresh(message.id)
                       },
-                    })
-                  }} //
-                  size="icon"
-                  variant="ghost"
-                  className="absolute size-5 -bottom-0 left-0 rounded-none"
-                >
-                  <RefreshCcw className="size-3" />
-                </Button>
-              )}
+                    },
+                  })
+                }} //
+                size="icon"
+                variant="ghost"
+                className="absolute size-5 -bottom-0 left-0 rounded-none"
+              >
+                <RefreshCcw className="size-3" />
+              </Button>
             </div>
           )
         })}
         <div ref={bottomRef} />
       </div>
       <div className="w-full fixed bottom-0 p-4 z-50 bg-background">
-        {!isInterviewCompleted && (
+        {conversation.length < 40 && (
           <div className={cn('max-w-3xl w-full border rounded-md p-2 flex flex-col')}>
             {isRecording ? (
               <Visualizer stream={stream} />
