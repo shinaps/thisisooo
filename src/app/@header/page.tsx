@@ -1,7 +1,6 @@
 import { Github, Notebook, Pencil } from 'lucide-react'
 import { headers } from 'next/headers'
 import Link from 'next/link'
-import { siGithub } from 'simple-icons'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
