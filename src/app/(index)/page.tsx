@@ -22,9 +22,9 @@ const getProjectCost = async () => {
 
     const json = (await response.json()) as any
     const costUsd = json.data
-      .filter((item) => item.results.length > 0)
-      .map((item) => item.results[0].amount.value)
-      .reduce((acc, curr) => acc + curr, 0)
+      .filter((item: { results: string | any[] }) => item.results.length > 0)
+      .map((item: { results: { amount: { value: any } }[] }) => item.results[0].amount.value)
+      .reduce((acc: any, curr: any) => acc + curr, 0)
 
     return Math.round(costUsd * 100) / 100
   } catch (error) {
