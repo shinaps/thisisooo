@@ -22,7 +22,6 @@ export default async function InterviewsPage() {
       id: interview.id,
       title: interview.title,
       createdAt: interview.createdAt,
-      completed: interview.completed,
       theme: interview.theme,
       articleId: article.id,
     }) //

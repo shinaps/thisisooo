@@ -17,7 +17,6 @@ type Props = {
     id: string
     title: string
     createdAt: Date
-    completed: boolean
     theme: string
     articleId: string | null
   }[]
