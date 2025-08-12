@@ -13,5 +13,5 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export const formatDate = (date: Date) => {
-  return dayjs(date).tz('Asia/Tokyo').format('YYYY年M月D日 HH:mm')
+  return dayjs(date).tz('Asia/Tokyo').format('YYYY年M月D日')
 }
