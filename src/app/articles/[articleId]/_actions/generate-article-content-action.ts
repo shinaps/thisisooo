@@ -1,10 +1,10 @@
 'use server'
 
-import { generateObject } from 'ai'
+import { createStreamableValue } from '@ai-sdk/rsc'
+import { streamText } from 'ai'
 import { and, eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
 import { getDb } from '@/drizzle/client'
 import { ARTICLE_STATUS, article } from '@/drizzle/schema/d1/article-schema'
 import { interview, type SelectInterview, type TextContent } from '@/drizzle/schema/d1/interview-schema'
@@ -12,17 +12,8 @@ import { auth } from '@/lib/auth'
 import { openai } from '@/lib/openai'
 
 const basePrompt = `
-あなたは日本語の熟練編集者です。  
-以下のインタビュー逐語原稿から、読みやすく、事実に忠実なインタビュー記事を生成してください。  
-
 [出力仕様]
-- 出力は必ず次の形式で返すこと
-{
-  "title": "記事タイトル（60字以内）",
-  "body": "Markdown形式の本文（本文中にタイトルを含めない）"
-}
-- "title" と "body" の内容は整合性を保つこと
-- "body" はMarkdown形式とし、最初の行にタイトルは記載しない
+出力はMarkdown形式の本文のみを返してください。（本文中にタイトルを含めない）
 
 [本文条件]
 - 記事の内容は、インタビューの内容に基づき、事実に忠実であること
@@ -55,11 +46,17 @@ const basePrompt = `
 #### {1〜2文のまとめ（記事全体のまとめをインタビュワー視点で）}
 `
 
-const generatePrompt = (interview: SelectInterview) => {
+const generatePrompt = (interview: SelectInterview, title: string) => {
+  console.log(title)
+  console.log(title)
   const textContents = interview.content.filter((message) => message.type === 'text') satisfies TextContent[]
   const interviewMessages = textContents.filter((content) => content.role !== 'system')
 
-  let prompt = basePrompt
+  let prompt = 'あなたは日本語の熟練編集者です。\n以下のインタビュー逐語原稿から、読みやすく、事実に忠実なインタビュー記事を生成してください。\n'
+
+  prompt += `インタビュー記事のタイトルは「${title}」とします。\n\n`
+
+  prompt += basePrompt
 
   prompt += `--- ここからインタビュー原稿 ---\n\n`
 
@@ -76,7 +73,7 @@ const generatePrompt = (interview: SelectInterview) => {
   return prompt
 }
 
-export const continueGenerateArticleAction = async (interviewId: string, articleId: string) => {
+export const generateArticleContentAction = async (interviewId: string, articleId: string, title: string) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -84,6 +81,7 @@ export const continueGenerateArticleAction = async (interviewId: string, article
   if (!session?.user) {
     redirect('/sign-in')
   }
+
   const db = await getDb()
   const [selectedInterview] = await db
     .select() //
@@ -95,34 +93,33 @@ export const continueGenerateArticleAction = async (interviewId: string, article
       ),
     )
     .limit(1)
-  const prompt = generatePrompt(selectedInterview)
+  const prompt = generatePrompt(selectedInterview, title)
+  const stream = createStreamableValue<string, Error>()
 
-  await db
-    .update(article) //
-    .set({ status: ARTICLE_STATUS.IN_PROGRESS })
-    .where(eq(article.id, articleId))
-
-  const { object } = await generateObject({
-    model: openai('gpt-5-2025-08-07'),
-    schema: z.object({
-      title: z.string(),
-      body: z.string(),
-    }),
-    prompt: prompt,
-  })
-
-  const { title, body } = object
-  await db
-    .update(article)
-    .set({
-      title: title,
-      content: body,
-      status: ARTICLE_STATUS.COMPLETED,
+  ;(async () => {
+    const { textStream } = streamText({
+      model: openai('gpt-5-chat-latest'),
+      prompt: prompt,
     })
-    .where(eq(article.id, articleId))
+
+    let content = ''
+    for await (const text of textStream) {
+      content += text
+      stream.update(text)
+    }
+
+    await db
+      .update(article)
+      .set({
+        content: content,
+        status: ARTICLE_STATUS.COMPLETED,
+      })
+      .where(eq(article.id, articleId))
+
+    stream.done()
+  })()
 
   return {
-    title,
-    body,
+    content: stream.value,
   }
 }
