@@ -1,6 +1,5 @@
 'use server'
 
-import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { generateObject } from 'ai'
 import { and, eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
@@ -55,6 +54,7 @@ const basePrompt = `
 
 #### {1〜2文のまとめ（記事全体のまとめをインタビュワー視点で）}
 `
+
 const generatePrompt = (interview: SelectInterview) => {
   const textContents = interview.content.filter((message) => message.type === 'text') satisfies TextContent[]
   const interviewMessages = textContents.filter((content) => content.role !== 'system')
@@ -76,7 +76,7 @@ const generatePrompt = (interview: SelectInterview) => {
   return prompt
 }
 
-export const generateArticleAction = async (interviewId: string) => {
+export const continueGenerateArticleAction = async (interviewId: string, articleId: string) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -95,50 +95,34 @@ export const generateArticleAction = async (interviewId: string) => {
       ),
     )
     .limit(1)
-
-  if (!selectedInterview) {
-    throw new Error('Interview not found')
-  }
-
-  const [createdArticle] = await db
-    .insert(article)
-    .values({
-      interviewId: selectedInterview.id,
-      authorId: session.user.id,
-      status: ARTICLE_STATUS.INIT,
-      theme: selectedInterview.theme,
-    })
-    .returning()
-
   const prompt = generatePrompt(selectedInterview)
 
   await db
     .update(article) //
     .set({ status: ARTICLE_STATUS.IN_PROGRESS })
-    .where(eq(article.id, createdArticle.id))
+    .where(eq(article.id, articleId))
 
-  const { ctx } = await getCloudflareContext({ async: true })
-  const generateAndUpdateArticle = async () => {
-    const { object } = await generateObject({
-      model: openai('gpt-5-2025-08-07'),
-      schema: z.object({
-        title: z.string(),
-        body: z.string(),
-      }),
-      prompt: prompt,
+  const { object } = await generateObject({
+    model: openai('gpt-5-2025-08-07'),
+    schema: z.object({
+      title: z.string(),
+      body: z.string(),
+    }),
+    prompt: prompt,
+  })
+
+  const { title, body } = object
+  await db
+    .update(article)
+    .set({
+      title: title,
+      content: body,
+      status: ARTICLE_STATUS.COMPLETED,
     })
+    .where(eq(article.id, articleId))
 
-    const { title, body } = object
-    await db
-      .update(article)
-      .set({
-        title: title,
-        content: body,
-        status: ARTICLE_STATUS.COMPLETED,
-      })
-      .where(eq(article.id, createdArticle.id))
+  return {
+    title,
+    body,
   }
-
-  ctx.waitUntil(generateAndUpdateArticle())
-  redirect(`/articles/${createdArticle.id}`)
 }

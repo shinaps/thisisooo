@@ -1,8 +1,11 @@
+import { eq } from 'drizzle-orm/sql/expressions/conditions'
 import { Github, Notebook, Pencil } from 'lucide-react'
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { getDb } from '@/drizzle/client'
+import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import { auth } from '@/lib/auth'
 
 export default async function IndexPageHeader() {
@@ -11,6 +14,13 @@ export default async function IndexPageHeader() {
   })
 
   if (session?.user) {
+    const db = await getDb()
+    const [profile] = await db
+      .select() //
+      .from(userProfile)
+      .where(eq(userProfile.userId, session.user.id))
+      .limit(1)
+
     return (
       <div className="mx-auto max-w-screen-lg h-16 flex items-center justify-between px-4">
         <Link href="/" className="font-semibold">
@@ -34,8 +44,8 @@ export default async function IndexPageHeader() {
           </Link>
           <Link href="/profile">
             <Avatar>
-              <AvatarImage src={session.user.image || ''} />
-              <AvatarFallback>{session.user.name.charAt(0) || 'a'}</AvatarFallback>
+              <AvatarImage src={profile.image || ''} />
+              <AvatarFallback>{profile.name.charAt(0) || ''}</AvatarFallback>
             </Avatar>
           </Link>
         </div>
