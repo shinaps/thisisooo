@@ -2,32 +2,29 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { updateProfileAction } from '@/app/profile/_actions/update-profile-action'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Loader } from '@/components/ui/loader'
-import type { User } from '@/lib/auth'
+import type { SelectUserProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import { authClient } from '@/lib/auth-client'
 
 type Props = {
-  user: User
+  profile: SelectUserProfile
 }
 export const Profile = (props: Props) => {
   const router = useRouter()
-  const [name, setName] = useState(props.user.name || 'anonymous')
-  const [username, setUsername] = useState(props.user.username || 'anonymous')
+  const [name, setName] = useState(props.profile.name || 'anonymous')
+  const [username, setUsername] = useState(props.profile.username || 'anonymous')
   const [isLoading, setIsLoading] = useState(false)
 
   const handleClickUpdate = async () => {
     setIsLoading(true)
     try {
-      await authClient.updateUser({
-        name: name,
-        // @ts-ignore
-        username: username,
-      })
+      await updateProfileAction(props.profile.userId, name, username)
       router.refresh()
     } catch (error) {
       console.error('Failed to update user:', error)
@@ -70,7 +67,7 @@ export const Profile = (props: Props) => {
         <div className="flex flex-col gap-y-6">
           <div className="flex items-center gap-x-6">
             <Avatar className="size-12">
-              <AvatarImage src={props.user.image || ''} />
+              <AvatarImage src={props.profile.image || ''} />
               <AvatarFallback>{name.charAt(0)}</AvatarFallback>
             </Avatar>
             <span>←これはまだ編集できないのでユーザーにも表示されません</span>

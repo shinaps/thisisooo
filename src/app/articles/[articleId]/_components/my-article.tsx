@@ -1,6 +1,6 @@
 import { Article } from '@/app/articles/[articleId]/_components/article'
 import { WaitForArticle } from '@/app/articles/[articleId]/_components/wait-for-article'
-import { ARTICLE_STATUS } from '@/drizzle/schema/article-schema'
+import { ARTICLE_STATUS } from '@/drizzle/schema/d1/article-schema'
 
 type Props = {
   article: {

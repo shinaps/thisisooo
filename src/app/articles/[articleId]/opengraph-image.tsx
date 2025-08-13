@@ -1,8 +1,8 @@
 import { and, eq } from 'drizzle-orm/sql/expressions/conditions'
 import { ImageResponse } from 'next/og'
-import { db } from '@/drizzle/client'
-import { article } from '@/drizzle/schema/article-schema'
-import { user } from '@/drizzle/schema/auth-schema'
+import { getDb } from '@/drizzle/client'
+import { article } from '@/drizzle/schema/d1/article-schema'
+import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 
 export const size = {
   width: 1200,
@@ -15,14 +15,15 @@ export const contentType = 'image/jpeg'
 export default async function Image({ params }: { params: { articleId: string } }) {
   const { articleId } = await params
 
+  const db = await getDb()
   const [selectedArticle] = await db
     .select({
       title: article.title,
       theme: article.theme,
-      userDisplayName: user.name,
+      userDisplayName: userProfile.name,
     }) //
     .from(article)
-    .leftJoin(user, eq(article.authorId, user.id))
+    .leftJoin(userProfile, eq(article.authorId, userProfile.userId))
     .where(
       and(
         eq(article.id, articleId), //

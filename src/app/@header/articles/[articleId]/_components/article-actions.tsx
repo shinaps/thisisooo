@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { updateArticlePublishStateAction } from '@/app/@header/articles/[articleId]/_actions/update-article-publish-state-action'
 import { Button } from '@/components/ui/button'
-import type { SelectArticle } from '@/drizzle/schema/article-schema'
+import type { SelectArticle } from '@/drizzle/schema/d1/article-schema'
 
 type Props = {
   article: SelectArticle

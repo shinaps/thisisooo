@@ -11,8 +11,8 @@ import { promptForHobbyInterview } from '@/app/interviews/_prompts/hobby'
 import { promptForRecentEffortInterview } from '@/app/interviews/_prompts/recent-effort'
 import { promptForRecentRestaurantInterview } from '@/app/interviews/_prompts/recent-restaurant'
 import { promptForSelfIntroductionInterview } from '@/app/interviews/_prompts/self-introduction'
-import { db } from '@/drizzle/client'
-import { type InsertInterview, interview } from '@/drizzle/schema/interview-schema'
+import { getDb } from '@/drizzle/client'
+import { type InsertInterview, interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
 const prompts = {
@@ -64,6 +64,7 @@ export const initInterviewAction = async (theme: InterviewTheme) => {
     theme: THEME_TO_TITLE[theme],
   } satisfies InsertInterview
 
+  const db = await getDb()
   const [insertedInterview] = await db
     .insert(interview)
     .values({ ...newInterview })

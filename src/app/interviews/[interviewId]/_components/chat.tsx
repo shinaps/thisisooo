@@ -10,7 +10,7 @@ import { useRecordingAndTranscribe } from '@/app/interviews/[interviewId]/_hooks
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import type { TextContent } from '@/drizzle/schema/interview-schema'
+import type { TextContent } from '@/drizzle/schema/d1/interview-schema'
 import { cn } from '@/lib/utils'
 
 type Props = {

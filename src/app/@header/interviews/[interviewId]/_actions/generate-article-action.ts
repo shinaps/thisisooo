@@ -1,13 +1,14 @@
 'use server'
 
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { generateObject } from 'ai'
 import { and, eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
-import { db } from '@/drizzle/client'
-import { ARTICLE_STATUS, article } from '@/drizzle/schema/article-schema'
-import { interview, type SelectInterview, type TextContent } from '@/drizzle/schema/interview-schema'
+import { getDb } from '@/drizzle/client'
+import { ARTICLE_STATUS, article } from '@/drizzle/schema/d1/article-schema'
+import { interview, type SelectInterview, type TextContent } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 import { openai } from '@/lib/openai'
 
@@ -83,7 +84,7 @@ export const generateArticleAction = async (interviewId: string) => {
   if (!session?.user) {
     redirect('/sign-in')
   }
-
+  const db = await getDb()
   const [selectedInterview] = await db
     .select() //
     .from(interview)
@@ -116,24 +117,28 @@ export const generateArticleAction = async (interviewId: string) => {
     .set({ status: ARTICLE_STATUS.IN_PROGRESS })
     .where(eq(article.id, createdArticle.id))
 
-  const { object } = await generateObject({
-    model: openai('gpt-5-2025-08-07'),
-    schema: z.object({
-      title: z.string(),
-      body: z.string(),
-    }),
-    prompt: prompt,
-  })
-
-  const { title, body } = object
-  await db
-    .update(article)
-    .set({
-      title: title,
-      content: body,
-      status: ARTICLE_STATUS.COMPLETED,
+  const { ctx } = await getCloudflareContext({ async: true })
+  const generateAndUpdateArticle = async () => {
+    const { object } = await generateObject({
+      model: openai('gpt-5-2025-08-07'),
+      schema: z.object({
+        title: z.string(),
+        body: z.string(),
+      }),
+      prompt: prompt,
     })
-    .where(eq(article.id, createdArticle.id))
 
+    const { title, body } = object
+    await db
+      .update(article)
+      .set({
+        title: title,
+        content: body,
+        status: ARTICLE_STATUS.COMPLETED,
+      })
+      .where(eq(article.id, createdArticle.id))
+  }
+
+  ctx.waitUntil(generateAndUpdateArticle())
   redirect(`/articles/${createdArticle.id}`)
 }

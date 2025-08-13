@@ -3,7 +3,7 @@
 import { generateText } from 'ai'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import type { TextContent } from '@/drizzle/schema/interview-schema'
+import type { TextContent } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 import { openai } from '@/lib/openai'
 

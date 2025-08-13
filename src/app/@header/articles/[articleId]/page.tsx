@@ -4,8 +4,8 @@ import { headers } from 'next/headers'
 import Link from 'next/link'
 import { ArticleActions } from '@/app/@header/articles/[articleId]/_components/article-actions'
 import { Button } from '@/components/ui/button'
-import { db } from '@/drizzle/client'
-import { ARTICLE_STATUS, article } from '@/drizzle/schema/article-schema'
+import { getDb } from '@/drizzle/client'
+import { ARTICLE_STATUS, article } from '@/drizzle/schema/d1/article-schema'
 import { auth } from '@/lib/auth'
 
 export default async function ArticleHeader({ params }: { params: Promise<{ articleId: string }> }) {
@@ -15,6 +15,7 @@ export default async function ArticleHeader({ params }: { params: Promise<{ arti
     headers: await headers(),
   })
 
+  const db = await getDb()
   const [selectedArticle] = await db
     .select() //
     .from(article)

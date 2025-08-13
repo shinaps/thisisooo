@@ -19,7 +19,7 @@ export const PublicArticles = (props: Props) => {
   return (
     <div className="flex flex-col px-4 py-8 gap-y-12">
       <div className="flex flex-col gap-y-2">
-        <span className="text-sm font-semibold">this is ooo monthly budget</span>
+        <span className="text-sm font-semibold">this is ooo's monthly budget</span>
         <Progress value={(props.cost / 10) * 100} />
       </div>
       <div className="flex flex-col gap-y-4">

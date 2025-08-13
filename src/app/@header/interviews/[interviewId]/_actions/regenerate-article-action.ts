@@ -2,10 +2,11 @@
 
 import { eq } from 'drizzle-orm/sql/expressions/conditions'
 import { generateArticleAction } from '@/app/@header/interviews/[interviewId]/_actions/generate-article-action'
-import { db } from '@/drizzle/client'
-import { article } from '@/drizzle/schema/article-schema'
+import { getDb } from '@/drizzle/client'
+import { article } from '@/drizzle/schema/d1/article-schema'
 
 const deleteArticle = async (articleId: string) => {
+  const db = await getDb()
   await db.delete(article).where(eq(article.id, articleId))
 }
 

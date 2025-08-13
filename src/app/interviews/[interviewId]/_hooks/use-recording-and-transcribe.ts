@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { transcribeAction } from '@/app/interviews/[interviewId]/_actions/transcribe-action'
-import type { TextContent } from '@/drizzle/schema/interview-schema'
+import type { TextContent } from '@/drizzle/schema/d1/interview-schema'
 
 type UseRecOptions = {
   maxDurationMs?: number // 録音の自動停止上限（デフォ 5分）

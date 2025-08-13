@@ -4,7 +4,7 @@ import { streamText } from 'ai'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { updateInterviewMessagesAction } from '@/app/interviews/[interviewId]/_actions/update-interview-messages-action'
-import type { TextContent } from '@/drizzle/schema/interview-schema'
+import type { TextContent } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 import { openai } from '@/lib/openai'
 

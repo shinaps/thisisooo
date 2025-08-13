@@ -3,9 +3,9 @@ import { eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Interviews } from '@/app/interviews/_components/interviews'
-import { db } from '@/drizzle/client'
-import { article } from '@/drizzle/schema/article-schema'
-import { interview } from '@/drizzle/schema/interview-schema'
+import { getDb } from '@/drizzle/client'
+import { article } from '@/drizzle/schema/d1/article-schema'
+import { interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
 export default async function InterviewsPage() {
@@ -17,6 +17,7 @@ export default async function InterviewsPage() {
     redirect('/sign-in')
   }
 
+  const db = await getDb()
   const interviews = await db
     .select({
       id: interview.id,

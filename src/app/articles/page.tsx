@@ -3,8 +3,8 @@ import { eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Articles } from '@/app/articles/_components/articles'
-import { db } from '@/drizzle/client'
-import { article } from '@/drizzle/schema/article-schema'
+import { getDb } from '@/drizzle/client'
+import { article } from '@/drizzle/schema/d1/article-schema'
 import { auth } from '@/lib/auth'
 
 export default async function ArticlesPage() {
@@ -16,6 +16,7 @@ export default async function ArticlesPage() {
     redirect('/sign-in')
   }
 
+  const db = await getDb()
   const articles = await db
     .select() //
     .from(article)

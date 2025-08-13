@@ -16,60 +16,180 @@
     "enabled": true
   },
   "workers_dev": false,
-
+  /************************************************
+   ** Bindings for API
+   ************************************************/
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "next-dev-kv"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "D1",
+      "database_name": "d1",
+      "database_id": "next-dev-d1",
+      "migrations_dir": "drizzle/d1"
+    }
+  ],
+  /************************************************
+   ** Bindings for OpenNext
+   ************************************************/
   "env": {
     "development": {
-      "vars": {
-        "NEXT_PUBLIC_APP_URL": "https://next-preview.shinaps.jp",
-        "BETTER_AUTH_URL": "https://next-preview.shinaps.jp",
-        "GOOGLE_CLIENT_ID": "857503952006-p4s57uqq473kro35rc0tb92og7g64fe3.apps.googleusercontent.com"
-      }
+      /************************************************
+       ** Bindings for API
+       ************************************************/
+      "kv_namespaces": [
+        {
+          "binding": "KV",
+          "id": "preview-kv"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "D1",
+          "database_name": "d1",
+          "database_id": "preview-d1",
+          "migrations_dir": "drizzle/d1"
+        }
+      ],
+      /************************************************
+       ** Bindings for OpenNext
+       ************************************************/
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "thisisooo"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "NEXT_INC_CACHE_R2_BUCKET",
+          "bucket_name": "thisisooo-next-incremental-cache-dev"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "NEXT_CACHE_DO_QUEUE",
+            "class_name": "DOQueueHandler"
+          }
+        ]
+      },
+      "migrations": [
+        {
+          "tag": "v1",
+          "new_sqlite_classes": ["DOQueueHandler"]
+        }
+      ]
+    },
+    "staging": {
+      "route": {
+        "custom_domain": true,
+        "pattern": "stg.thisis.ooo"
+      },
+      /************************************************
+       ** Bindings for API
+       ************************************************/
+      "kv_namespaces": [
+        {
+          "binding": "KV",
+          // thisisooo-kv-stg
+          "id": "02634a0cb60a43dc95f1b10181043418"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "D1",
+          "database_name": "thisisooo-d1-stg",
+          "database_id": "c62fa469-911d-4039-926d-26e54c8f3fc4",
+          "migrations_dir": "drizzle/d1"
+        }
+      ],
+      /************************************************
+       ** Bindings for OpenNext
+       ************************************************/
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "thisisooo"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "NEXT_INC_CACHE_R2_BUCKET",
+          "bucket_name": "thisisooo-next-incremental-cache-stg"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "NEXT_CACHE_DO_QUEUE",
+            "class_name": "DOQueueHandler"
+          }
+        ]
+      },
+      "migrations": [
+        {
+          "tag": "v1",
+          "new_sqlite_classes": ["DOQueueHandler"]
+        }
+      ]
     },
     "production": {
-      "vars": {
-        "NEXT_PUBLIC_APP_URL": "https://thisis.ooo",
-        "BETTER_AUTH_URL": "https://thisis.ooo",
-        "GOOGLE_CLIENT_ID": "857503952006-p4s57uqq473kro35rc0tb92og7g64fe3.apps.googleusercontent.com"
-      },
       "route": {
         "custom_domain": true,
         "pattern": "thisis.ooo"
-      }
+      },
+      /************************************************
+       ** Bindings for API
+       ************************************************/
+      "kv_namespaces": [
+        {
+          "binding": "KV",
+          // thisisooo-kv-prod
+          "id": "991688cd2dcf4e3d9f2ad39d98159cde"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "D1",
+          "database_name": "thisisooo-d1-prod",
+          "database_id": "796e93ea-5688-4141-8eb6-daa396701187",
+          "migrations_dir": "drizzle/d1"
+        }
+      ],
+      /************************************************
+       ** Bindings for OpenNext
+       ************************************************/
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "thisisooo"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "NEXT_INC_CACHE_R2_BUCKET",
+          "bucket_name": "thisisooo-next-incremental-cache-prod"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "NEXT_CACHE_DO_QUEUE",
+            "class_name": "DOQueueHandler"
+          }
+        ]
+      },
+      "migrations": [
+        {
+          "tag": "v1",
+          "new_sqlite_classes": ["DOQueueHandler"]
+        }
+      ]
     }
   }
-
-  /**
-   * Smart Placement
-   * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
-   */
-  // "placement": { "mode": "smart" },
-
-  /**
-   * Bindings
-   * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-   * databases, object storage, AI inference, real-time communication and more.
-   * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-   */
-
-  /**
-   * Environment Variables
-   * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
-   */
-  // "vars": { "MY_VARIABLE": "production_value" },
-  /**
-   * Note: Use secrets to store sensitive data.
-   * https://developers.cloudflare.com/workers/configuration/secrets/
-   */
-
-  /**
-   * Static Assets
-   * https://developers.cloudflare.com/workers/static-assets/binding/
-   */
-  // "assets": { "directory": "./public/", "binding": "ASSETS" },
-
-  /**
-   * Service Bindings (communicate between multiple Workers)
-   * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
-   */
-  // "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
 }

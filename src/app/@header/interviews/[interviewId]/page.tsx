@@ -6,8 +6,8 @@ import { getArticleIdAction } from '@/app/@header/interviews/[interviewId]/_acti
 import { GenerateArticleButton } from '@/app/@header/interviews/[interviewId]/_components/generate-article-button'
 import { InterviewDropdownMenu } from '@/app/@header/interviews/[interviewId]/_components/interview-dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { db } from '@/drizzle/client'
-import { interview } from '@/drizzle/schema/interview-schema'
+import { getDb } from '@/drizzle/client'
+import { interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
 export default async function InterviewHeader({ params }: { params: Promise<{ interviewId: string }> }) {
@@ -20,6 +20,7 @@ export default async function InterviewHeader({ params }: { params: Promise<{ in
     redirect('/sign-in')
   }
 
+  const db = await getDb()
   const [selectedInterview] = await db
     .select() //
     .from(interview)

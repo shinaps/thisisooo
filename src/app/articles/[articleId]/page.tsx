@@ -4,9 +4,9 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { MyArticle } from '@/app/articles/[articleId]/_components/my-article'
 import { NotMyArticle } from '@/app/articles/[articleId]/_components/not-my-article'
-import { db } from '@/drizzle/client'
-import { article } from '@/drizzle/schema/article-schema'
-import { user } from '@/drizzle/schema/auth-schema'
+import { getDb } from '@/drizzle/client'
+import { article } from '@/drizzle/schema/d1/article-schema'
+import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import { auth } from '@/lib/auth'
 
 type Props = {
@@ -16,14 +16,15 @@ type Props = {
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { articleId } = await params
 
+  const db = await getDb()
   const [selectedArticle] = await db
     .select({
       title: article.title,
       content: article.content,
-      userDisplayName: user.name,
+      userDisplayName: userProfile.name,
     }) //
     .from(article)
-    .leftJoin(user, eq(article.authorId, user.id))
+    .leftJoin(userProfile, eq(article.authorId, userProfile.userId))
     .where(eq(article.id, articleId))
 
   const parentMeta = await parent
@@ -55,6 +56,7 @@ export default async function ArticlePage({ params }: Props) {
     headers: await headers(),
   })
 
+  const db = await getDb()
   const [selectedArticle] = await db
     .select({
       id: article.id,
@@ -65,10 +67,10 @@ export default async function ArticlePage({ params }: Props) {
       interviewId: article.interviewId,
       authorId: article.authorId,
       createdAt: article.createdAt,
-      userDisplayName: user.name,
+      userDisplayName: userProfile.name,
     }) //
     .from(article)
-    .leftJoin(user, eq(article.authorId, user.id))
+    .leftJoin(userProfile, eq(article.authorId, userProfile.userId))
     .where(eq(article.id, articleId))
 
   if (!selectedArticle) {

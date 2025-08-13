@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm'
 import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { user } from '@/drizzle/schema/auth-schema'
-import { interview } from '@/drizzle/schema/interview-schema'
+import { interview } from '@/drizzle/schema/d1/interview-schema'
+import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 
 export const ARTICLE_STATUS = {
   INIT: 0,
@@ -33,7 +33,7 @@ export const article = sqliteTable(
       .notNull(),
     authorId: text('author_id')
       .notNull()
-      .references(() => user.id, { onDelete: 'cascade' }),
+      .references(() => userProfile.userId, { onDelete: 'cascade' }),
   },
   (table) => [
     index('article_latest_published_idx') //
