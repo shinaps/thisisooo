@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { generateArticleAction } from '@/app/@header/interviews/[interviewId]/_actions/generate-article-action'
+import { initGenerateArticleAction } from '@/app/@header/interviews/[interviewId]/_actions/init-generate-article-action'
 import { Button } from '@/components/ui/button'
 import { Loader } from '@/components/ui/loader'
 
@@ -13,7 +13,7 @@ export const GenerateArticleButton = (props: Props) => {
   const handleClickGenerateArticle = async () => {
     setIsLoading(true)
     try {
-      await generateArticleAction(props.interviewId)
+      await initGenerateArticleAction(props.interviewId)
     } catch (e) {
       console.error('記事生成に失敗しました:', e)
     } finally {

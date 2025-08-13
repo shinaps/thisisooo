@@ -114,7 +114,7 @@
       "services": [
         {
           "binding": "WORKER_SELF_REFERENCE",
-          "service": "thisisooo"
+          "service": "thisisooo-stg"
         }
       ],
       "r2_buckets": [

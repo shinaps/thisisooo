@@ -1,6 +1,4 @@
 import { Article } from '@/app/articles/[articleId]/_components/article'
-import { WaitForArticle } from '@/app/articles/[articleId]/_components/wait-for-article'
-import { ARTICLE_STATUS } from '@/drizzle/schema/d1/article-schema'
 
 type Props = {
   article: {
@@ -16,9 +14,5 @@ type Props = {
   }
 }
 export const MyArticle = (props: Props) => {
-  if (props.article.status !== ARTICLE_STATUS.COMPLETED) {
-    return <WaitForArticle articleId={props.article.id} initialStatus={props.article.status} />
-  }
-
   return <Article article={props.article} />
 }

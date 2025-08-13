@@ -74,7 +74,7 @@ export default async function ArticlePage({ params }: Props) {
     .where(eq(article.id, articleId))
 
   if (!selectedArticle) {
-    redirect('/')
+    redirect('/articles')
   }
 
   if (!session?.user || session.user.id !== selectedArticle.authorId) {
