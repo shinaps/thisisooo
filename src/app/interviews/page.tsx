@@ -25,6 +25,7 @@ export default async function InterviewsPage() {
       createdAt: interview.createdAt,
       theme: interview.theme,
       articleId: article.id,
+      articleTitle: article.title,
     }) //
     .from(interview)
     .leftJoin(article, eq(interview.id, article.interviewId))

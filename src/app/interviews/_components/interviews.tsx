@@ -16,6 +16,7 @@ type Props = {
     createdAt: Date
     theme: string
     articleId: string | null
+    articleTitle: string | null
   }[]
 }
 export const Interviews = (props: Props) => {
@@ -88,7 +89,10 @@ export const Interviews = (props: Props) => {
                         </Badge>
                       )}
                     </div>
-                    <CardTitle>{interview.title}</CardTitle>
+                    <CardTitle>
+                      {interview.title}
+                      {interview.articleTitle && `【${interview.articleTitle}】`}
+                    </CardTitle>
                   </CardHeader>
                   <CardFooter>
                     <div className="flex items-center justify-between w-full">
