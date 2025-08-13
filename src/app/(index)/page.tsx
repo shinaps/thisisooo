@@ -2,9 +2,9 @@ import dayjs from 'dayjs'
 import { desc } from 'drizzle-orm'
 import { eq } from 'drizzle-orm/sql/expressions/conditions'
 import { PublicArticles } from '@/app/(index)/_components/public-articles'
-import { db } from '@/drizzle/client'
-import { article } from '@/drizzle/schema/article-schema'
-import { user } from '@/drizzle/schema/auth-schema'
+import { getDb } from '@/drizzle/client'
+import { article } from '@/drizzle/schema/d1/article-schema'
+import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import { env } from '@/lib/env'
 
 const getProjectCost = async () => {
@@ -34,6 +34,7 @@ const getProjectCost = async () => {
 }
 
 export default async function Home() {
+  const db = await getDb()
   const articles = await db
     .select({
       id: article.id,
@@ -41,10 +42,10 @@ export default async function Home() {
       title: article.title,
       content: article.content,
       createdAt: article.createdAt,
-      userName: user.name || 'anonymous',
+      userName: userProfile.name || 'anonymous',
     }) //
     .from(article)
-    .leftJoin(user, eq(article.authorId, user.id))
+    .leftJoin(userProfile, eq(article.authorId, userProfile.userId))
     .where(eq(article.published, true))
     .limit(20)
     .orderBy(desc(article.createdAt))

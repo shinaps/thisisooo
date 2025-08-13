@@ -3,8 +3,8 @@
 import { eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { db } from '@/drizzle/client'
-import { article } from '@/drizzle/schema/article-schema'
+import { getDb } from '@/drizzle/client'
+import { article } from '@/drizzle/schema/d1/article-schema'
 import { auth } from '@/lib/auth'
 
 export const getArticleIdAction = async (interviewId: string) => {
@@ -16,6 +16,7 @@ export const getArticleIdAction = async (interviewId: string) => {
     redirect('/sign-in')
   }
 
+  const db = await getDb()
   const [selected] = await db
     .select({
       id: article.id,

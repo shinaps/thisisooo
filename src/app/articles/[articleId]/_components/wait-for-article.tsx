@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getArticleStatusAction } from '@/app/articles/[articleId]/_actions/get-article-status-action'
 import { Loader } from '@/components/ui/loader'
-import { ARTICLE_STATUS, type ArticleStatus } from '@/drizzle/schema/article-schema'
+import { ARTICLE_STATUS, type ArticleStatus } from '@/drizzle/schema/d1/article-schema'
 
 type Props = { articleId: string; initialStatus: ArticleStatus }
 export const WaitForArticle = (props: Props) => {

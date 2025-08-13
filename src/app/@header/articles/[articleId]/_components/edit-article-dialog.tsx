@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Loader } from '@/components/ui/loader'
 import { Textarea } from '@/components/ui/textarea'
-import type { SelectArticle } from '@/drizzle/schema/article-schema'
+import type { SelectArticle } from '@/drizzle/schema/d1/article-schema'
 
 type Props = {
   article: SelectArticle

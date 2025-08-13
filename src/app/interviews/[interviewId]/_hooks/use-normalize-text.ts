@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { normalizeTextAction } from '@/app/interviews/[interviewId]/_actions/normalize-text-action'
-import type { TextContent } from '@/drizzle/schema/interview-schema'
+import type { TextContent } from '@/drizzle/schema/d1/interview-schema'
 
 export const useNormalizeText = () => {
   const [isNormalizing, setIsNormalizing] = useState(false)

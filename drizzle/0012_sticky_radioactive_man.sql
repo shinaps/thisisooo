@@ -1,1 +1,0 @@
-CREATE INDEX `article_latest_published_idx` ON `article` ("created_at" DESC) WHERE "article"."published" = 1;

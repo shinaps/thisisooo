@@ -2,8 +2,8 @@ import { and, eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Chat } from '@/app/interviews/[interviewId]/_components/chat'
-import { db } from '@/drizzle/client'
-import { interview } from '@/drizzle/schema/interview-schema'
+import { getDb } from '@/drizzle/client'
+import { interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
 export default async function InterviewPage({ params }: { params: Promise<{ interviewId: string }> }) {
@@ -17,6 +17,7 @@ export default async function InterviewPage({ params }: { params: Promise<{ inte
     redirect('/sign-in')
   }
 
+  const db = await getDb()
   const [selectedInterview] = await db
     .select() //
     .from(interview)

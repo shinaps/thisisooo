@@ -1,5 +1,5 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { user } from '@/drizzle/schema/auth-schema'
+import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 
 const CONTENT_TYPE = {
   TEXT: 'text',
@@ -39,7 +39,7 @@ export const interview = sqliteTable('interview', {
     .notNull(),
   authorId: text('author_id')
     .notNull()
-    .references(() => user.id, { onDelete: 'cascade' }),
+    .references(() => userProfile.userId, { onDelete: 'cascade' }),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),

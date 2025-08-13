@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import type { SelectArticle } from '@/drizzle/schema/article-schema'
+import type { SelectArticle } from '@/drizzle/schema/d1/article-schema'
 import { formatDate } from '@/lib/utils'
 
 type Props = {

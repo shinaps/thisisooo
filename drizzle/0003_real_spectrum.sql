@@ -1,1 +1,0 @@
-ALTER TABLE `interview` ADD `completed` integer;

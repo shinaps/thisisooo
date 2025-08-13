@@ -1,10 +1,14 @@
-import 'server-only'
-
 import { createClient } from '@libsql/client/web'
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { drizzle } from 'drizzle-orm/libsql'
-import * as schema from '@/drizzle/schema/auth-schema'
+import { createAuthMiddleware } from 'better-auth/api'
+import { openAPI } from 'better-auth/plugins'
+import { drizzle as drizzleD1 } from 'drizzle-orm/d1'
+import { drizzle as drizzleTurso } from 'drizzle-orm/libsql'
+import { eq } from 'drizzle-orm/sql/expressions/conditions'
+import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
+import * as schema from '@/drizzle/schema/turso/auth-schema'
 import { env } from '@/lib/env'
 
 const client = createClient({
@@ -12,7 +16,7 @@ const client = createClient({
   authToken: env.TURSO_AUTH_TOKEN,
 })
 
-const db = drizzle(client, { schema })
+const db = drizzleTurso(client, { schema })
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -35,17 +39,36 @@ export const auth = betterAuth({
     },
   },
   user: {
-    additionalFields: {
-      username: {
-        type: 'string',
-        required: true,
-        unique: true,
-        defaultValue: () => crypto.randomUUID(),
-      },
-    },
     deleteUser: {
       enabled: true,
     },
+  },
+  telemetry: {
+    enabled: false,
+  },
+  plugins: [openAPI()],
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      if (ctx.path.startsWith('/callback/:id')) {
+        const newSession = ctx.context.newSession
+        if (newSession) {
+          const { env } = await getCloudflareContext({ async: true })
+          const db = drizzleD1(env.D1)
+          const [user] = await db
+            .select() //
+            .from(userProfile)
+            .where(eq(userProfile.userId, newSession.user.id))
+
+          if (!user) {
+            await db.insert(userProfile).values({
+              userId: newSession.user.id,
+              name: newSession.user.name,
+              image: newSession.user.image,
+            })
+          }
+        }
+      }
+    }),
   },
 })
 
