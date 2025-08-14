@@ -7,6 +7,7 @@ import { continueConversationAction } from '@/app/interviews/[interviewId]/_acti
 import { Visualizer } from '@/app/interviews/[interviewId]/_components/visualizer'
 import { useNormalizeText } from '@/app/interviews/[interviewId]/_hooks/use-normalize-text'
 import { useRecordingAndTranscribe } from '@/app/interviews/[interviewId]/_hooks/use-recording-and-transcribe'
+import { useVirtualKeyboard } from '@/app/interviews/[interviewId]/_hooks/use-virtual-keyboard'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -41,6 +42,7 @@ export const Chat = ({ interviewId, initialMessages }: Props) => {
   })
 
   const { isNormalizing, normalizeText } = useNormalizeText()
+  const { keyboardHeight } = useVirtualKeyboard()
 
   useEffect(() => {
     if (initialMessageProceed.current) return
@@ -136,7 +138,7 @@ export const Chat = ({ interviewId, initialMessages }: Props) => {
       <div
         className="flex flex-col w-full gap-y-4 pt-2"
         style={{
-          paddingBottom: `${94 + textareaHeight}px`,
+          paddingBottom: `${94 + textareaHeight + keyboardHeight}px`,
         }}
       >
         {conversation.map((message, index) => {
@@ -180,84 +182,86 @@ export const Chat = ({ interviewId, initialMessages }: Props) => {
         })}
         <div ref={bottomRef} />
       </div>
-      <div className="w-full fixed bottom-0 p-4 z-50 bg-background">
-        {conversation.length < 40 && (
-          <div className={cn('max-w-3xl w-full border rounded-md p-2 flex flex-col')}>
-            {isRecording ? (
-              <Visualizer stream={stream} />
-            ) : (
-              <Textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message here."
-                className="border-none resize-none focus-visible:ring-0 min-h-auto rounded-none shadow-none"
-                rows={1}
-                disabled={isLoading}
-              />
-            )}
-
-            <div className="flex gap-x-2 self-end">
-              {isRecording && (
-                <>
-                  <Button
-                    size="icon" //
-                    variant="ghost"
-                    onClick={cancelRecording}
-                  >
-                    <X />
-                  </Button>
-                  <Button
-                    size="icon" //
-                    variant="ghost"
-                    onClick={stopRecording}
-                  >
-                    <Circle className="fill-red-600 text-red-600" />
-                  </Button>
-                </>
+      <div className={cn('w-full fixed z-50 bg-background keyboard-aware-bottom')} style={{ bottom: `${keyboardHeight}px` }}>
+        <div className="p-4">
+          {conversation.length < 40 && (
+            <div className={cn('max-w-3xl w-full border rounded-md p-2 flex flex-col')}>
+              {isRecording ? (
+                <Visualizer stream={stream} />
+              ) : (
+                <Textarea
+                  ref={textareaRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Type your message here."
+                  className="border-none resize-none focus-visible:ring-0 min-h-auto rounded-none shadow-none"
+                  rows={1}
+                  disabled={isLoading}
+                />
               )}
 
-              {isLoading && (
-                <Button
-                  size="icon" //
-                  variant="ghost"
-                  disabled
-                >
-                  <LoaderCircle className="animate-spin" />
-                </Button>
-              )}
-
-              {!isLoading && !isRecording && (
-                <>
-                  {input.trim() !== '' && (
+              <div className="flex gap-x-2 self-end">
+                {isRecording && (
+                  <>
                     <Button
                       size="icon" //
                       variant="ghost"
-                      onClick={handleClickWindSparkles}
+                      onClick={cancelRecording}
                     >
-                      <WandSparkles />
+                      <X />
                     </Button>
-                  )}
+                    <Button
+                      size="icon" //
+                      variant="ghost"
+                      onClick={stopRecording}
+                    >
+                      <Circle className="fill-red-600 text-red-600" />
+                    </Button>
+                  </>
+                )}
 
+                {isLoading && (
                   <Button
                     size="icon" //
                     variant="ghost"
-                    onClick={startRecording}
+                    disabled
                   >
-                    <Mic />
+                    <LoaderCircle className="animate-spin" />
                   </Button>
-                  <Button
-                    size="icon" //
-                    variant="ghost"
-                    onClick={handleClickSend}
-                  >
-                    <Send />
-                  </Button>
-                </>
-              )}
+                )}
+
+                {!isLoading && !isRecording && (
+                  <>
+                    {input.trim() !== '' && (
+                      <Button
+                        size="icon" //
+                        variant="ghost"
+                        onClick={handleClickWindSparkles}
+                      >
+                        <WandSparkles />
+                      </Button>
+                    )}
+
+                    <Button
+                      size="icon" //
+                      variant="ghost"
+                      onClick={startRecording}
+                    >
+                      <Mic />
+                    </Button>
+                    <Button
+                      size="icon" //
+                      variant="ghost"
+                      onClick={handleClickSend}
+                    >
+                      <Send />
+                    </Button>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

@@ -22,6 +22,15 @@ export const metadata: Metadata = {
   description: 'AIがあらゆるテーマでインタビュー記事を自動生成するサービスです。',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // 仮想キーボード対応
+  interactiveWidget: 'resizes-content',
+}
+
 export default function RootLayout(props: { children: ReactNode; header: ReactNode }) {
   return (
     <html lang="ja">
