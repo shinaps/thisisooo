@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { updateProfileAction } from '@/app/profile/_actions/update-profile-action'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -25,9 +26,11 @@ export const Profile = (props: Props) => {
     setIsLoading(true)
     try {
       await updateProfileAction(props.profile.userId, name, username)
+      toast.success('ユーザー情報を更新しました')
+
       router.refresh()
     } catch (error) {
-      console.error('Failed to update user:', error)
+      toast.error('ユーザー情報の更新に失敗しました')
     } finally {
       setIsLoading(false)
     }
@@ -50,7 +53,6 @@ export const Profile = (props: Props) => {
     try {
       await authClient.deleteUser()
       router.refresh()
-      // Optionally redirect or show a success message
     } catch (error) {
       console.error('Failed to delete account:', error)
     } finally {
