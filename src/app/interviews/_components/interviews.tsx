@@ -42,12 +42,12 @@ export const Interviews = (props: Props) => {
         <div className="flex flex-col items-center px-4 justify-center grow">
           <div className="flex flex-col gap-y-8">
             <span className="text-lg font-semibold text-center">記事を作成しましょう！</span>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center">
               {Object.entries(THEME_TO_TITLE).map(([key, title]) => (
                 <Button key={key} onClick={() => handleInitInterview(key as InterviewTheme)}>
                   {title}
                 </Button>
-              ))}{' '}
+              ))}
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ export const Interviews = (props: Props) => {
               <Button key={key} onClick={() => handleInitInterview(key as InterviewTheme)}>
                 {title}
               </Button>
-            ))}{' '}
+            ))}
           </div>
         </div>
         <div className="w-full items-center flex flex-col gap-y-4">
