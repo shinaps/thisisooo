@@ -7,6 +7,13 @@ import { getDb } from '@/drizzle/client'
 import { type InsertInterview, interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
+const generalPrompt = `
+
+## 出力ルール
+会話文の出力時はマークダウン記法（##、**、- など）を使用せず、自然な日本語のみで回答してください。
+インタビューの進行や質問もすべて会話形式で行い、装飾や記号は使わないようにしてください。
+`
+
 export const initInterviewAction = async (theme: InterviewTheme) => {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -16,11 +23,13 @@ export const initInterviewAction = async (theme: InterviewTheme) => {
     redirect('/sign-in')
   }
 
+  const prompt = prompts[theme] + generalPrompt
+
   const newContent = {
     id: crypto.randomUUID(),
     type: 'text',
     role: 'system',
-    content: prompts[theme],
+    content: prompt,
     createdAt: new Date(),
   } satisfies InsertInterview['content'][number]
 
