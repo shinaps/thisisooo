@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { type InterviewTheme, initInterviewAction } from '@/app/interviews/_actions/init-interview-action'
+import { initInterviewAction } from '@/app/interviews/_actions/init-interview-action'
+import { type InterviewTheme, THEME_TO_TITLE } from '@/app/interviews/_prompts'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -22,10 +23,10 @@ type Props = {
 export const Interviews = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleInitInterview = async (type: InterviewTheme) => {
+  const handleInitInterview = async (theme: InterviewTheme) => {
     setIsLoading(true)
     try {
-      await initInterviewAction(type)
+      await initInterviewAction(theme)
     } catch (error) {
       console.error('インタビューの初期化に失敗しました:', error)
       // エラーハンドリングを追加することもできます
@@ -42,15 +43,11 @@ export const Interviews = (props: Props) => {
           <div className="flex flex-col gap-y-8">
             <span className="text-lg font-semibold text-center">記事を作成しましょう！</span>
             <div className="flex flex-wrap gap-2">
-              <Button onClick={() => handleInitInterview('career')}>キャリア</Button>
-              <Button onClick={() => handleInitInterview('recentEffort')}>直近の頑張り</Button>
-              <Button onClick={() => handleInitInterview('favoriteArtist')}>好きなアーティスト</Button>
-              <Button onClick={() => handleInitInterview('hobby')}>趣味</Button>
-              <Button onClick={() => handleInitInterview('favoriteBook')}>好きな本</Button>
-              <Button onClick={() => handleInitInterview('favoriteMovie')}>好きな映画</Button>
-              <Button onClick={() => handleInitInterview('favoriteGame')}>好きなゲーム</Button>
-              <Button onClick={() => handleInitInterview('recentRestaurant')}>最近行った飲食店</Button>
-              <Button onClick={() => handleInitInterview('selfIntroduction')}>自己紹介</Button>
+              {Object.entries(THEME_TO_TITLE).map(([key, title]) => (
+                <Button key={key} onClick={() => handleInitInterview(key as InterviewTheme)}>
+                  {title}
+                </Button>
+              ))}{' '}
             </div>
           </div>
         </div>
@@ -65,14 +62,11 @@ export const Interviews = (props: Props) => {
         <div className="flex flex-col gap-y-2">
           <span className="text-lg font-semibold">記事を作成する</span>
           <div className="flex flex-wrap gap-2">
-            <Button onClick={() => handleInitInterview('career')}>キャリア</Button>
-            <Button onClick={() => handleInitInterview('recentEffort')}>直近の頑張り</Button>
-            <Button onClick={() => handleInitInterview('favoriteArtist')}>好きなアーティスト</Button>
-            <Button onClick={() => handleInitInterview('hobby')}>趣味</Button>
-            <Button onClick={() => handleInitInterview('favoriteBook')}>好きな本</Button>
-            <Button onClick={() => handleInitInterview('favoriteMovie')}>好きな映画</Button>
-            <Button onClick={() => handleInitInterview('favoriteGame')}>好きなゲーム</Button>
-            <Button onClick={() => handleInitInterview('selfIntroduction')}>自己紹介</Button>
+            {Object.entries(THEME_TO_TITLE).map(([key, title]) => (
+              <Button key={key} onClick={() => handleInitInterview(key as InterviewTheme)}>
+                {title}
+              </Button>
+            ))}{' '}
           </div>
         </div>
         <div className="w-full items-center flex flex-col gap-y-4">
