@@ -130,6 +130,11 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none; /* Chrome Safari */
   }
+
+  /* 仮想キーボード対応 */
+  .keyboard-aware-bottom {
+    bottom: env(keyboard-inset-height, 0px);
+  }
 }
 
 @layer components {
