@@ -53,7 +53,7 @@ export const Chat = ({ interviewId, initialMessages }: Props) => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView()
-  }, [conversation, input])
+  }, [conversation])
 
   useEffect(() => {
     if (textareaRef.current) {
