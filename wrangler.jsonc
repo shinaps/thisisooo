@@ -86,6 +86,7 @@
       ]
     },
     "staging": {
+      "name": "thisisooo-stg",
       "route": {
         "custom_domain": true,
         "pattern": "stg.thisis.ooo"
@@ -139,6 +140,7 @@
       ]
     },
     "production": {
+      "name": "thisisooo",
       "route": {
         "custom_domain": true,
         "pattern": "thisis.ooo"
