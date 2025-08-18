@@ -40,7 +40,7 @@ export const initInterviewAction = async (theme: InterviewTheme) => {
     theme: THEME_TO_TITLE[theme],
   } satisfies InsertInterview
 
-  const db = await getDb()
+  const db = getDb()
   const [insertedInterview] = await db
     .insert(interview)
     .values({ ...newInterview })

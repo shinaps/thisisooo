@@ -16,7 +16,7 @@ export default async function ArticlesPage() {
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const articles = await db
     .select() //
     .from(article)

@@ -14,7 +14,7 @@ export const updateArticlePublishStateAction = async (articleId: string, isPubli
   if (!session?.user) {
     redirect('/sign-in')
   }
-  const db = await getDb()
+  const db = getDb()
   const [updated] = await db
     .update(article)
     .set({

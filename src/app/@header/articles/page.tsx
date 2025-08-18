@@ -18,7 +18,7 @@ export default async function ArticlesHeader() {
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const [profile] = await db
     .select() //
     .from(userProfile)

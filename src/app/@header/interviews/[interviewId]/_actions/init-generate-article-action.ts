@@ -16,7 +16,7 @@ export const initGenerateArticleAction = async (interviewId: string) => {
   if (!session?.user) {
     redirect('/sign-in')
   }
-  const db = await getDb()
+  const db = getDb()
   const [selectedInterview] = await db
     .select() //
     .from(interview)

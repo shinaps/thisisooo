@@ -15,7 +15,7 @@ export const contentType = 'image/jpeg'
 export default async function Image({ params }: { params: { articleId: string } }) {
   const { articleId } = await params
 
-  const db = await getDb()
+  const db = getDb()
   const [selectedArticle] = await db
     .select({
       title: article.title,

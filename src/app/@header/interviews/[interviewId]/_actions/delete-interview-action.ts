@@ -15,7 +15,7 @@ export const deleteInterviewAction = async (interviewId: string) => {
   if (!session?.user) {
     redirect('/sign-in')
   }
-  const db = await getDb()
+  const db = getDb()
   await db.delete(interview).where(
     and(
       eq(interview.id, interviewId), //

@@ -20,7 +20,7 @@ export default async function InterviewHeader({ params }: { params: Promise<{ in
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const [selectedInterview] = await db
     .select() //
     .from(interview)

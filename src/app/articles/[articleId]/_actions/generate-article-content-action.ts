@@ -82,7 +82,7 @@ export const generateArticleContentAction = async (interviewId: string, articleI
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const [selectedInterview] = await db
     .select() //
     .from(interview)
