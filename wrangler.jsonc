@@ -69,20 +69,6 @@
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
           "bucket_name": "thisisooo-next-incremental-cache-dev"
         }
-      ],
-      "durable_objects": {
-        "bindings": [
-          {
-            "name": "NEXT_CACHE_DO_QUEUE",
-            "class_name": "DOQueueHandler"
-          }
-        ]
-      },
-      "migrations": [
-        {
-          "tag": "v1",
-          "new_sqlite_classes": ["DOQueueHandler"]
-        }
       ]
     },
     "staging": {
@@ -123,20 +109,6 @@
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
           "bucket_name": "thisisooo-next-incremental-cache-stg"
         }
-      ],
-      "durable_objects": {
-        "bindings": [
-          {
-            "name": "NEXT_CACHE_DO_QUEUE",
-            "class_name": "DOQueueHandler"
-          }
-        ]
-      },
-      "migrations": [
-        {
-          "tag": "v1",
-          "new_sqlite_classes": ["DOQueueHandler"]
-        }
       ]
     },
     "production": {
@@ -176,20 +148,6 @@
         {
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
           "bucket_name": "thisisooo-next-incremental-cache-prod"
-        }
-      ],
-      "durable_objects": {
-        "bindings": [
-          {
-            "name": "NEXT_CACHE_DO_QUEUE",
-            "class_name": "DOQueueHandler"
-          }
-        ]
-      },
-      "migrations": [
-        {
-          "tag": "v1",
-          "new_sqlite_classes": ["DOQueueHandler"]
         }
       ]
     }
