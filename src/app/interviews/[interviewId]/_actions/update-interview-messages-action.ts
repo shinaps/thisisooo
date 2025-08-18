@@ -16,7 +16,7 @@ export const updateInterviewMessagesAction = async (interviewId: string, message
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const [updatedInterview] = await db //
     .update(interview)
     .set({ content: messages })

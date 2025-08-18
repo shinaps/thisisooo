@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import { desc } from 'drizzle-orm'
 import { eq } from 'drizzle-orm/sql/expressions/conditions'
 import { PublicArticles } from '@/app/(index)/_components/public-articles'
-import { getDb } from '@/drizzle/client'
+import { getDbAsync } from '@/drizzle/client'
 import { article } from '@/drizzle/schema/d1/article-schema'
 import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import { env } from '@/lib/env'
@@ -34,7 +34,7 @@ const getProjectCost = async () => {
 }
 
 export default async function Home() {
-  const db = await getDb()
+  const db = await getDbAsync()
   const articles = await db
     .select({
       id: article.id,

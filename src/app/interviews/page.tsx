@@ -17,7 +17,7 @@ export default async function InterviewsPage() {
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const interviews = await db
     .select({
       id: interview.id,

@@ -16,7 +16,7 @@ export const getArticleIdAction = async (interviewId: string) => {
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const [selected] = await db
     .select({
       id: article.id,

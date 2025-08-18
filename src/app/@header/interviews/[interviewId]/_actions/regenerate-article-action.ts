@@ -6,7 +6,7 @@ import { getDb } from '@/drizzle/client'
 import { article } from '@/drizzle/schema/d1/article-schema'
 
 const deleteArticle = async (articleId: string) => {
-  const db = await getDb()
+  const db = getDb()
   await db.delete(article).where(eq(article.id, articleId))
 }
 

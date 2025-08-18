@@ -15,7 +15,7 @@ export default async function ProfilePage() {
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const [profile] = await db
     .select() //
     .from(userProfile)

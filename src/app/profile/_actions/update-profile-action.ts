@@ -24,7 +24,7 @@ export const updateProfileAction = async (
   nameSchema.parse(name)
   usernameSchema.parse(username)
 
-  const db = await getDb()
+  const db = getDb()
   await db
     .update(userProfile) //
     .set({ name, username })

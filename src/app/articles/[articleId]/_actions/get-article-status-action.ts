@@ -16,7 +16,7 @@ export const getArticleStatusAction = async (articleId: string) => {
     redirect('/sign-in')
   }
 
-  const db = await getDb()
+  const db = getDb()
   const [selectedArticle] = await db
     .select({
       status: article.status,

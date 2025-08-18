@@ -16,7 +16,7 @@ type Props = {
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { articleId } = await params
 
-  const db = await getDb()
+  const db = getDb()
   const [selectedArticle] = await db
     .select({
       title: article.title,
@@ -56,7 +56,7 @@ export default async function ArticlePage({ params }: Props) {
     headers: await headers(),
   })
 
-  const db = await getDb()
+  const db = getDb()
   const [selectedArticle] = await db
     .select({
       id: article.id,

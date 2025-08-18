@@ -1,12 +1,11 @@
 import { createClient } from '@libsql/client/web'
-import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { createAuthMiddleware } from 'better-auth/api'
 import { openAPI } from 'better-auth/plugins'
-import { drizzle as drizzleD1 } from 'drizzle-orm/d1'
 import { drizzle as drizzleTurso } from 'drizzle-orm/libsql'
 import { eq } from 'drizzle-orm/sql/expressions/conditions'
+import { getDb } from '@/drizzle/client'
 import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import * as schema from '@/drizzle/schema/turso/auth-schema'
 import { env } from '@/lib/env'
@@ -52,8 +51,7 @@ export const auth = betterAuth({
       if (ctx.path.startsWith('/callback/:id')) {
         const newSession = ctx.context.newSession
         if (newSession) {
-          const { env } = await getCloudflareContext({ async: true })
-          const db = drizzleD1(env.D1)
+          const db = getDb()
           const [user] = await db
             .select() //
             .from(userProfile)

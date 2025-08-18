@@ -16,7 +16,7 @@ export default async function ArticleHeader({ params }: { params: Promise<{ arti
     headers: await headers(),
   })
 
-  const db = await getDb()
+  const db = getDb()
   const [selectedArticle] = await db
     .select() //
     .from(article)
@@ -47,7 +47,7 @@ export default async function ArticleHeader({ params }: { params: Promise<{ arti
 
   const isAuthor = session.user.id === selectedArticle.authorId
   if (isAuthor && selectedArticle.status === ARTICLE_STATUS.COMPLETED) {
-    const db = await getDb()
+    const db = getDb()
     const [selectedInterview] = await db
       .select() //
       .from(interview)

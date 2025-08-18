@@ -15,7 +15,7 @@ export const deleteArticleAction = async (articleId: string) => {
   if (!session?.user) {
     redirect('/sign-in')
   }
-  const db = await getDb()
+  const db = getDb()
   await db.delete(article).where(
     and(
       eq(article.id, articleId), //
