@@ -14,7 +14,7 @@ export default async function IndexPageHeader() {
   })
 
   if (session?.user) {
-    const db =  getDb()
+    const db = getDb()
     const [profile] = await db
       .select() //
       .from(userProfile)
