@@ -8,6 +8,7 @@ import { promptForProductInterview } from '@/app/interviews/_prompts/product-int
 import { promptForRecentEffortInterview } from '@/app/interviews/_prompts/recent-effort'
 import { promptForRecentRestaurantInterview } from '@/app/interviews/_prompts/recent-restaurant'
 import { promptForSelfIntroductionInterview } from '@/app/interviews/_prompts/self-introduction'
+import { promptForThoughtReasonInterview } from '@/app/interviews/_prompts/thought-reason'
 
 export const prompts = {
   career: promptForCareerInterview,
@@ -20,6 +21,7 @@ export const prompts = {
   recentRestaurant: promptForRecentRestaurantInterview,
   selfIntroduction: promptForSelfIntroductionInterview,
   product: promptForProductInterview,
+  thoughtReason: promptForThoughtReasonInterview,
 }
 export type InterviewTheme = keyof typeof prompts
 
@@ -34,4 +36,5 @@ export const THEME_TO_TITLE = {
   recentRestaurant: '最近行った飲食店',
   selfIntroduction: '自己紹介',
   product: 'プロダクト',
+  thoughtReason: '考え',
 } as const
