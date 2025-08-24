@@ -28,6 +28,10 @@ export const Interviews = (props: Props) => {
     try {
       await initInterviewAction(theme)
     } catch (error) {
+      if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+        return
+      }
+
       console.error('インタビューの初期化に失敗しました:', error)
       // エラーハンドリングを追加することもできます
     } finally {
