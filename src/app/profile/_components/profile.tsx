@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { deleteUserAction } from '@/app/profile/_actions/delete-user-action'
 import { updateProfileAction } from '@/app/profile/_actions/update-profile-action'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -51,6 +52,7 @@ export const Profile = (props: Props) => {
   const handleClickDeleteAccount = async () => {
     setIsLoading(true)
     try {
+      await deleteUserAction(props.profile.userId)
       await authClient.deleteUser()
       router.refresh()
     } catch (error) {

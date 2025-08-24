@@ -9,7 +9,6 @@ export function middleware(request: NextRequest) {
   // This is the recommended approach to optimistically redirect users
   // We recommend handling auth checks in each page/route
   if (!sessionCookie) {
-    console.log(request.nextUrl.pathname)
     const isPublicRoute =
       request.nextUrl.pathname === '/' || //
       request.nextUrl.pathname.startsWith('/sign-in') ||
