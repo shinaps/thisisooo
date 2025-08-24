@@ -9,11 +9,7 @@ import { article } from '@/drizzle/schema/d1/article-schema'
 import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import { auth } from '@/lib/auth'
 
-type Props = {
-  params: Promise<{ articleId: string }>
-}
-
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<'/articles/[articleId]'>, parent: ResolvingMetadata): Promise<Metadata> {
   const { articleId } = await params
 
   const db = getDb()
@@ -49,7 +45,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   }
 }
 
-export default async function ArticlePage({ params }: Props) {
+export default async function ArticlePage({ params }: PageProps<'/articles/[articleId]'>) {
   const { articleId } = await params
 
   const session = await auth.api.getSession({

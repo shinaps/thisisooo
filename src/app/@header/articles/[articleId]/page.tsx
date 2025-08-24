@@ -9,7 +9,7 @@ import { ARTICLE_STATUS, article } from '@/drizzle/schema/d1/article-schema'
 import { interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
-export default async function ArticleHeader({ params }: { params: Promise<{ articleId: string }> }) {
+export default async function ArticleHeader({ params }: PageProps<'/articles/[articleId]'>) {
   const { articleId } = await params
 
   const session = await auth.api.getSession({

@@ -13,8 +13,8 @@ const nameSchema = z
 const usernameSchema = z
   .string()
   .min(4)
-  .max(20)
-  .regex(/^[a-zA-Z0-9_]+$/)
+  .max(36)
+  .regex(/^[a-zA-Z0-9_-]+$/)
 
 export const updateProfileAction = async (
   userId: string, //

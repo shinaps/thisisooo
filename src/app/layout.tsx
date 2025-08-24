@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import type { ReactNode } from 'react'
 import { Providers } from '@/components/providers'
 import { env } from '@/lib/env'
 import { cn } from '@/lib/utils'
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
   description: 'AIがあらゆるテーマでインタビュー記事を自動生成するサービスです。',
 }
 
-export default function RootLayout(props: { children: ReactNode; header: ReactNode }) {
+export default function RootLayout(props: LayoutProps<'/'>) {
   return (
     <html lang="ja">
       <body

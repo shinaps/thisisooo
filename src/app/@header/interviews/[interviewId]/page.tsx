@@ -10,7 +10,7 @@ import { getDb } from '@/drizzle/client'
 import { interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
-export default async function InterviewHeader({ params }: { params: Promise<{ interviewId: string }> }) {
+export default async function InterviewHeader({ params }: PageProps<'/interviews/[interviewId]'>) {
   const { interviewId } = await params
   const session = await auth.api.getSession({
     headers: await headers(),
