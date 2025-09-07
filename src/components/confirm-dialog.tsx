@@ -1,9 +1,8 @@
 'use client'
 
-import type { VariantProps } from 'class-variance-authority'
-import { useEffect, useState } from 'react'
+import { type ComponentProps, useEffect, useState } from 'react'
 import { createCallable } from 'react-call'
-import { Button, type buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 type ConfirmDialogProps = {
@@ -11,12 +10,12 @@ type ConfirmDialogProps = {
   description: string
   onConfirm: {
     text: string
-    variant: VariantProps<typeof buttonVariants>['variant']
+    variant: ComponentProps<typeof Button>['variant']
     onClick: () => void
   }
   onCancel?: {
     text: string
-    variant: VariantProps<typeof buttonVariants>['variant']
+    variant: ComponentProps<typeof Button>['variant']
     onClick: () => void
   }
 }
