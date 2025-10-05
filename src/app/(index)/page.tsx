@@ -7,6 +7,8 @@ import { article } from '@/drizzle/schema/d1/article-schema'
 import { userProfile } from '@/drizzle/schema/d1/user-profile-schema'
 import { env } from '@/lib/env'
 
+export const dynamic = 'force-dynamic'
+
 const getProjectCost = async () => {
   try {
     const startOfMonth = dayjs().tz('Asia/Tokyo').startOf('month').unix()
