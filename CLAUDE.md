@@ -135,6 +135,32 @@ Next.js App Routerの**Parallel Routes**を活用:
 - `src/components/` - アプリケーション共通コンポーネント (confirm-dialog, providers等)
 - 各ページディレクトリ内に `_components/`, `_actions/` を配置 (Private Folders)
 
+### shadcn/ui MCPツールの使用
+UIコンポーネントが必要な場合、以下のMCPツールを**優先的に**使用すること:
+
+1. **コンポーネント検索**
+   - `mcp__shadcn__search_items_in_registries` - コンポーネントを検索
+   - `mcp__shadcn__list_items_in_registries` - 利用可能なコンポーネント一覧を取得
+
+2. **コンポーネント詳細確認**
+   - `mcp__shadcn__view_items_in_registries` - コンポーネントの詳細情報とファイル内容を確認
+   - `mcp__shadcn__get_item_examples_from_registries` - 使用例とデモコードを確認
+
+3. **コンポーネント追加**
+   - `mcp__shadcn__get_add_command_for_items` - インストールコマンドを取得
+   - 取得したコマンドを実行してプロジェクトに追加
+
+**ワークフロー例:**
+```
+1. 必要なUIを実装する前に、shadcn MCPで既存コンポーネントを検索
+2. 適切なコンポーネントが見つかったら、view_itemsで実装内容を確認
+3. get_item_examplesで使用例を確認
+4. get_add_commandでインストールコマンドを取得し実行
+5. プロジェクトに統合
+```
+
+**重要:** 新規UIコンポーネントを自作する前に、必ずshadcn MCPで既存のコンポーネントやブロックが利用できないか確認すること。
+
 ## 開発ルール
 
 ### ページ実装の原則
