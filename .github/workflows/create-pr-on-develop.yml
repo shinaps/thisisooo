@@ -1,0 +1,28 @@
+name: Create PR to main when develop branch is updated
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  create-pr-if-not-exists:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Check and Create PR if not exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 既存PRの確認
+          EXISTING_PR=$(gh pr list --base main --head develop --state open --json number --jq '.[0].number')
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create \
+              --base main \
+              --head develop \
+              --title "develop" \
+              --body ""
+          else
+            echo "既にmainへのPRが存在します (PR番号: $EXISTING_PR)"
+          fi
