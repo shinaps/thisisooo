@@ -1,0 +1,1 @@
+ALTER TABLE `article` ADD `tone` text DEFAULT 'interview' NOT NULL;
