@@ -76,7 +76,7 @@ export const Interviews = (props: Props) => {
         <div className="w-full items-center flex flex-col gap-y-4">
           {props.interviews.map((interview) => {
             return (
-              <Link href={`/interviews/${interview.id}`} key={interview.id} className="w-full" prefetch={false}>
+              <Link href={`/interviews/${interview.id}`} key={interview.id} className="w-full">
                 <Card>
                   <CardHeader className="gap-y-4">
                     <div className="flex flex-wrap gap-2">
