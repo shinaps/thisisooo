@@ -10,6 +10,12 @@ export const ARTICLE_STATUS = {
 }
 export type ArticleStatus = (typeof ARTICLE_STATUS)[keyof typeof ARTICLE_STATUS]
 
+export const ARTICLE_TONE = {
+  INTERVIEW: 'interview',
+  BLOG: 'blog',
+} as const
+export type ArticleTone = (typeof ARTICLE_TONE)[keyof typeof ARTICLE_TONE]
+
 export const article = sqliteTable(
   'article',
   {
@@ -22,6 +28,7 @@ export const article = sqliteTable(
       .unique(),
     title: text('title'),
     theme: text('theme').notNull(),
+    tone: text('tone').$type<ArticleTone>().notNull().default(ARTICLE_TONE.INTERVIEW),
     thumbnailUrl: text('thumbnailUrl'),
     content: text('content', { mode: 'text' }),
     status: integer('status', { mode: 'number' }).notNull(),

@@ -4,11 +4,11 @@ import { and, eq } from 'drizzle-orm/sql/expressions/conditions'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getDb } from '@/drizzle/client'
-import { ARTICLE_STATUS, article } from '@/drizzle/schema/d1/article-schema'
+import { ARTICLE_STATUS, type ArticleTone, article } from '@/drizzle/schema/d1/article-schema'
 import { interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
-export const initGenerateArticleAction = async (interviewId: string) => {
+export const initGenerateArticleAction = async (interviewId: string, tone: ArticleTone) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -39,6 +39,7 @@ export const initGenerateArticleAction = async (interviewId: string) => {
       authorId: session.user.id,
       status: ARTICLE_STATUS.INIT,
       theme: selectedInterview.theme,
+      tone: tone,
     })
     .returning()
 

@@ -15,7 +15,7 @@ export const Visualizer = ({ stream, variant = 'waveform', className }: Props) =
   const audioCtxRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
-  const dataRef = useRef<Uint8Array | null>(null)
+  const dataRef = useRef<Uint8Array<ArrayBuffer> | null>(null)
 
   useEffect(() => {
     if (!stream || !canvasRef.current) return

@@ -19,6 +19,7 @@ type Props = {
     createdAt: Date
     interviewId: string
     userDisplayName: string | null
+    tone: 'interview' | 'blog'
   }
 }
 export const Article = (props: Props) => {
@@ -41,7 +42,7 @@ export const Article = (props: Props) => {
     }
   }
   const generateContent = async () => {
-    const { content } = await generateArticleContentAction(interviewId, articleId, title)
+    const { content } = await generateArticleContentAction(interviewId, articleId, title, props.article.tone)
 
     let textContent = ''
     for await (const delta of readStreamableValue(content)) {
