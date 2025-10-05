@@ -1,3 +1,4 @@
+import { promptForAchievementInterview } from '@/app/interviews/_prompts/achievement'
 import { promptForCareerInterview } from '@/app/interviews/_prompts/career-interview'
 import { promptForFavoriteArtistInterview } from '@/app/interviews/_prompts/favorite-artist'
 import { promptForFavoriteBookInterview } from '@/app/interviews/_prompts/favorite-book'
@@ -11,6 +12,7 @@ import { promptForSelfIntroductionInterview } from '@/app/interviews/_prompts/se
 import { promptForThoughtReasonInterview } from '@/app/interviews/_prompts/thought-reason'
 
 export const prompts = {
+  achievement: promptForAchievementInterview,
   career: promptForCareerInterview,
   recentEffort: promptForRecentEffortInterview,
   hobby: promptForHobbyInterview,
@@ -26,6 +28,7 @@ export const prompts = {
 export type InterviewTheme = keyof typeof prompts
 
 export const THEME_TO_TITLE = {
+  achievement: 'アチーブメント',
   career: 'キャリア',
   recentEffort: '直近の頑張り',
   hobby: '趣味',
