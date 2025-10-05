@@ -64,6 +64,7 @@ export default async function ArticlePage({ params }: PageProps<'/articles/[arti
       authorId: article.authorId,
       createdAt: article.createdAt,
       userDisplayName: userProfile.name,
+      tone: article.tone,
     }) //
     .from(article)
     .leftJoin(userProfile, eq(article.authorId, userProfile.userId))

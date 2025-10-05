@@ -13,6 +13,7 @@ type Props = {
     authorId: string
     createdAt: Date
     userDisplayName: string | null
+    tone: 'interview' | 'blog'
   }
 }
 export const NotMyArticle = (props: Props) => {

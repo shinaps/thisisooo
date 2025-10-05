@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getArticleIdAction } from '@/app/@header/interviews/[interviewId]/_actions/get-article-id-action'
-import { GenerateArticleButton } from '@/app/@header/interviews/[interviewId]/_components/generate-article-button'
+import { ArticleToneDialog } from '@/app/@header/interviews/[interviewId]/_components/article-tone-dialog'
 import { InterviewDropdownMenu } from '@/app/@header/interviews/[interviewId]/_components/interview-dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { getDb } from '@/drizzle/client'
@@ -61,7 +61,7 @@ export default async function InterviewHeader({ params }: PageProps<'/interviews
       </Link>
       <div className="flex items-center gap-x-4">
         <InterviewDropdownMenu interviewId={selectedInterview.id} articleId={articleId} />
-        <GenerateArticleButton interviewId={selectedInterview.id} />
+        <ArticleToneDialog interviewId={selectedInterview.id} />
       </div>
     </div>
   )
