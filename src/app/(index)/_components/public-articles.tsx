@@ -1,11 +1,9 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
 import { formatDate } from '@/lib/utils'
 
 type Props = {
-  cost: number
   articles: {
     id: string
     theme: string
@@ -18,10 +16,6 @@ type Props = {
 export const PublicArticles = (props: Props) => {
   return (
     <div className="flex flex-col px-4 py-8 gap-y-12">
-      <div className="flex flex-col gap-y-2">
-        <span className="text-sm font-semibold">this is ooo's monthly budget</span>
-        <Progress value={(props.cost / 10) * 100} />
-      </div>
       <div className="flex flex-col gap-y-4">
         <h2 className="font-semibold text-lg">最新の記事</h2>
         <div className="w-full items-center flex flex-col gap-y-4">
