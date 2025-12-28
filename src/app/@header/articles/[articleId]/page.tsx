@@ -60,8 +60,10 @@ export default async function ArticleHeader({ params }: PageProps<'/articles/[ar
         </Link>
         <div className="flex items-center gap-x-4">
           <ArticleDropdownMenu
-            articleId={selectedArticle.id} //
+            articleId={selectedArticle.id}
             interviewId={selectedInterview.id}
+            currentTone={selectedArticle.tone}
+            currentCustomInstruction={selectedArticle.customInstruction}
           />
           <ArticleActions article={selectedArticle} />
         </div>

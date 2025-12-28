@@ -7,7 +7,7 @@ import { getDb } from '@/drizzle/client'
 import { article } from '@/drizzle/schema/d1/article-schema'
 import { auth } from '@/lib/auth'
 
-export const getArticleIdAction = async (interviewId: string) => {
+export const getArticleInfoAction = async (interviewId: string) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -20,7 +20,9 @@ export const getArticleIdAction = async (interviewId: string) => {
   const [selected] = await db
     .select({
       id: article.id,
-    }) //
+      tone: article.tone,
+      customInstruction: article.customInstruction,
+    })
     .from(article)
     .where(eq(article.interviewId, interviewId))
 
@@ -28,5 +30,5 @@ export const getArticleIdAction = async (interviewId: string) => {
     return null
   }
 
-  return selected.id
+  return selected
 }

@@ -79,7 +79,7 @@ const blogPrompt = `
 1〜2段落のまとめ（記事全体のまとめを回答者視点で）
 `
 
-const generatePrompt = (interview: SelectInterview, title: string, tone: 'interview' | 'blog') => {
+const generatePrompt = (interview: SelectInterview, title: string, tone: 'interview' | 'blog', customInstruction: string | null = null) => {
   const textContents = interview.content.filter((message) => message.type === 'text') satisfies TextContent[]
   const interviewMessages = textContents.filter((content) => content.role !== 'system')
 
@@ -93,6 +93,12 @@ const generatePrompt = (interview: SelectInterview, title: string, tone: 'interv
     prompt = 'あなたは日本語の熟練編集者です。\n以下のインタビュー逐語原稿から、回答者の一人称視点で自然な語り口調のブログ記事を生成してください。\n'
     prompt += `ブログ記事のタイトルは「${title}」とします。\n\n`
     prompt += blogPrompt
+  }
+
+  if (customInstruction?.trim()) {
+    prompt += `\n[追加指示]\n`
+    prompt += `上記の基本ルールに加え、以下のユーザーからの追加指示も考慮して記事を生成してください:\n`
+    prompt += `${customInstruction.trim()}\n\n`
   }
 
   prompt += `--- ここからインタビュー原稿 ---\n\n`
@@ -135,7 +141,10 @@ export const generateArticleContentAction = async (
       ),
     )
     .limit(1)
-  const prompt = generatePrompt(selectedInterview, title, tone)
+
+  const [selectedArticle] = await db.select({ customInstruction: article.customInstruction }).from(article).where(eq(article.id, articleId)).limit(1)
+
+  const prompt = generatePrompt(selectedInterview, title, tone, selectedArticle?.customInstruction)
   const stream = createStreamableValue<string, Error>()
 
   ;(async () => {
