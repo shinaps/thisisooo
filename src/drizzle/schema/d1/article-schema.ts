@@ -29,6 +29,7 @@ export const article = sqliteTable(
     title: text('title'),
     theme: text('theme').notNull(),
     tone: text('tone').$type<ArticleTone>().notNull().default(ARTICLE_TONE.INTERVIEW),
+    customInstruction: text('custom_instruction'),
     thumbnailUrl: text('thumbnailUrl'),
     content: text('content', { mode: 'text' }),
     status: integer('status', { mode: 'number' }).notNull(),

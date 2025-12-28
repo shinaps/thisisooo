@@ -8,7 +8,7 @@ import { ARTICLE_STATUS, type ArticleTone, article } from '@/drizzle/schema/d1/a
 import { interview } from '@/drizzle/schema/d1/interview-schema'
 import { auth } from '@/lib/auth'
 
-export const initGenerateArticleAction = async (interviewId: string, tone: ArticleTone) => {
+export const initGenerateArticleAction = async (interviewId: string, tone: ArticleTone, customInstruction: string | null = null) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -40,6 +40,7 @@ export const initGenerateArticleAction = async (interviewId: string, tone: Artic
       status: ARTICLE_STATUS.INIT,
       theme: selectedInterview.theme,
       tone: tone,
+      customInstruction: customInstruction,
     })
     .returning()
 

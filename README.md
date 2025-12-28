@@ -3,7 +3,6 @@
 
 ## this is ...
 
-- not a vibe-coded project
 - built with Next.js on Cloudflare Workers
 - styled with shadcn/ui
 - powered by drizzle

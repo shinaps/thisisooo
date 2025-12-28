@@ -1,0 +1,1 @@
+ALTER TABLE `article` ADD `custom_instruction` text;

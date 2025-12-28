@@ -4,21 +4,27 @@ import { Ellipsis, RefreshCcw, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { deleteInterviewAction } from '@/app/@header/interviews/[interviewId]/_actions/delete-interview-action'
-import { regenerateArticleAction } from '@/app/@header/interviews/[interviewId]/_actions/regenerate-article-action'
+import { RegenerateArticleDialog } from '@/app/@header/articles/[articleId]/_components/regenerate-article-dialog'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Loader } from '@/components/ui/loader'
+import type { ArticleTone } from '@/drizzle/schema/d1/article-schema'
 
 type Props = {
   interviewId: string
-  articleId: string | null
+  articleInfo: {
+    id: string
+    tone: ArticleTone
+    customInstruction: string | null
+  } | null
 }
 export const InterviewDropdownMenu = (props: Props) => {
-  const { interviewId, articleId } = props
+  const { interviewId, articleInfo } = props
 
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [regenerateDialogOpen, setRegenerateDialogOpen] = useState(false)
 
   const deleteInterview = async (interviewId: string) => {
     setIsLoading(true)
@@ -26,7 +32,6 @@ export const InterviewDropdownMenu = (props: Props) => {
       await deleteInterviewAction(interviewId)
     } catch (error) {
       console.error('インタビューの削除に失敗しました:', error)
-      // エラーハンドリングを追加することもできます
     } finally {
       router.refresh()
       setIsLoading(false)
@@ -47,34 +52,19 @@ export const InterviewDropdownMenu = (props: Props) => {
     })
   }
 
-  const regenerateArticle = async (interviewId: string, articleId: string) => {
-    setIsLoading(true)
-    try {
-      await regenerateArticleAction(interviewId, articleId)
-    } catch (e) {
-      console.error('記事の再生成に失敗しました:', e)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleClickRegenerateArticle = (interviewId: string, articleId: string) => {
-    ConfirmDialog.call({
-      title: '記事を再生成しますか？',
-      description: 'この記事を再生成します。よろしいですか？',
-      onConfirm: {
-        text: '再生成する',
-        variant: 'default',
-        onClick: async () => {
-          await regenerateArticle(interviewId, articleId)
-        },
-      },
-    })
-  }
-
   return (
     <>
       {isLoading && <Loader />}
+      {articleInfo && (
+        <RegenerateArticleDialog
+          interviewId={interviewId}
+          articleId={articleInfo.id}
+          currentTone={articleInfo.tone}
+          currentCustomInstruction={articleInfo.customInstruction}
+          open={regenerateDialogOpen}
+          onOpenChange={setRegenerateDialogOpen}
+        />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="icon">
@@ -82,9 +72,9 @@ export const InterviewDropdownMenu = (props: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {articleId && (
+          {articleInfo && (
             <>
-              <DropdownMenuItem onClick={() => handleClickRegenerateArticle(interviewId, articleId)}>
+              <DropdownMenuItem onClick={() => setRegenerateDialogOpen(true)}>
                 <RefreshCcw />
                 記事を再生成する
               </DropdownMenuItem>
